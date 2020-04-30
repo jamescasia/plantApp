@@ -11,24 +11,32 @@ class _ViewImageState extends State<ViewImage> {
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        width: Globals.width,
-        height: Globals.height,
-        child: Stack(
-          children: <Widget>[
-            Container(
-                height: Globals.height * 0.70,
-                width: Globals.width,
-                child:
-                    Image.asset("assets/images/hydro.png", fit: BoxFit.cover)),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                child: ExpandingBottomPanelSelling(isExpanded))
-          ],
-        ),
-      ),
-    );
+    return Material(child: SafeArea(
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Container(
+          width: Globals.width,
+          height: Globals.height,
+          color: Globals.grayHomeBg,
+          child: Stack(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
+                child: Container(
+                    height: Globals.height * 0.70,
+                    width: Globals.width,
+                    child: Image.asset("assets/images/hydro.png",
+                        fit: BoxFit.cover)),
+              ),
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: ExpandingBottomPanelSelling(isExpanded))
+            ],
+          ),
+        );
+      }),
+    ));
   }
 }

@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Globals.dheight = MediaQuery.of(context).size.height / 793;
     Globals.dwidth = MediaQuery.of(context).size.width / 393;
-    Globals.height = MediaQuery.of(context).size.height;
-    Globals.width = MediaQuery.of(context).size.width;
+    Globals.maxHeight = MediaQuery.of(context).size.height;
+    Globals.maxWidth = MediaQuery.of(context).size.width;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Globals.grayHomeBg,
         systemNavigationBarColor: Globals.grayHomeBg
@@ -52,6 +52,9 @@ class _HomePageState extends State<HomePage> {
       behavior: CustomScrollBehaviour(),
       child: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
+          safePadding = Globals.maxHeight - constraints.maxHeight;
+          Globals.height = constraints.maxHeight;
+          Globals.width = constraints.maxWidth;
           return Container(
             width: Globals.width,
             height: Globals.height,
@@ -59,10 +62,6 @@ class _HomePageState extends State<HomePage> {
             child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
-                  safePadding = Globals.height - constraints.maxHeight;
-                  Globals.height = constraints.maxHeight;
-                  Globals.width = constraints.maxWidth;
-
                   return <Widget>[
                     SliverAppBar(
                       expandedHeight: Globals.height * (1 - (1 / 1.618)),
@@ -184,19 +183,23 @@ class _HomePageState extends State<HomePage> {
                     width: Globals.width,
                     color: Colors.white,
                     height: 2000,
-                    padding: EdgeInsets.all(20),
-                    child: StaggeredGridView.countBuilder(
-                      scrollDirection: Axis.vertical,
-                      crossAxisCount: 2,
-                      itemCount: images.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          ImageTile(images[index]),
-                      staggeredTileBuilder: (int index) =>
-                          new StaggeredTile.count(
-                              1, (index % 2 == 0) ? 1.66 : 1.33),
-                      mainAxisSpacing: Globals.dwidth * 20,
-                      crossAxisSpacing: Globals.dwidth * 20,
-                    ),
+                    padding:
+                        EdgeInsets.only(left: Globals.dwidth * 20, right:Globals.dwidth * 20, top:Globals.dwidth *0),
+                    child: 
+                        StaggeredGridView.countBuilder(
+                          scrollDirection: Axis.vertical,
+                          crossAxisCount: 2,
+                          itemCount: images.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              ImageTile(images[index],index),
+                          staggeredTileBuilder: (int index) =>
+                              new StaggeredTile.count(
+                                  1, (index % 2 == 0) ? 1.66 : 1.33),
+                          mainAxisSpacing: Globals.dwidth * 20,
+                          crossAxisSpacing: Globals.dwidth * 20,
+                        ),
+                     
+                    
                   ),
 
                   // Example01()

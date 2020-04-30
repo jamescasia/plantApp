@@ -5,6 +5,8 @@ class Globals {
   static double dheight;
   static double width;
   static double height;
+  static double maxHeight;
+  static double maxWidth;
 
   static Color grayHomeBg = Color(0xffefefef);
   static Color commonGreen = Color(0xff5ac200);

@@ -25,8 +25,8 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     Globals.dheight = MediaQuery.of(context).size.height / 793;
     Globals.dwidth = MediaQuery.of(context).size.width / 393;
-    Globals.height = MediaQuery.of(context).size.height;
-    Globals.width = MediaQuery.of(context).size.width;
+    Globals.maxHeight = MediaQuery.of(context).size.height;
+    Globals.maxWidth = MediaQuery.of(context).size.width;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Globals.grayHomeBg,
       systemNavigationBarColor: const Color(0xFF1BA977),
@@ -34,7 +34,7 @@ class _LogInPageState extends State<LogInPage> {
     ));
     return SafeArea(
       child: LayoutBuilder(builder: (context, constraints) {
-        safePadding = Globals.height - constraints.maxHeight;
+        safePadding = Globals.maxHeight - constraints.maxHeight;
         Globals.height = constraints.maxHeight;
         Globals.width = constraints.maxWidth;
 
