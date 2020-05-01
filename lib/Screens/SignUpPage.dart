@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:plantApp/DataModels/Globals.dart'; 
+import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/ScopedModels/app_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'package:progress_indicators/progress_indicators.dart';
 import 'HomePage.dart';
-
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -28,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) => afterBuild());
 
     super.initState();
@@ -453,7 +452,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     ],
                                                   ),
                                                 ),
-                                           
                                               ]),
                                         ),
                                       ],

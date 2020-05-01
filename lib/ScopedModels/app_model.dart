@@ -10,7 +10,11 @@ class AppModel extends Model {
   AppDatabase appDatabase;
   AuthState authState = AuthState.LoggedOut;
   SignUpState signUpState = SignUpState.NotSignedUp;
+  AppModel(){
 
+    initialize();
+    
+  }
   initialize() {
     userAdapter = UserAdapter();
     appAuth = AppAuth();
@@ -45,8 +49,62 @@ class AppModel extends Model {
     initialize();
   }
 
-  logInScreenGoogleLogIn() async {}
-  
+  logInScreenGoogleLogIn() async {
+
+    try {
+      authState = AuthState.LoggingIn;
+      print(authState);
+
+      notifyListeners();
+
+      userAdapter.gUser = await appAuth.signUpWithGoogle();
+      authState = AuthState.LoggedIn;
+
+      userAdapter.uid = userAdapter.gUser.id.toString();
+      var exists = await appDatabase.userExists(userAdapter.uid);
+      if (!exists) {
+        authState = AuthState.InvalidLogIn;
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          authState = AuthState.LoggedOut;
+
+          print(authState);
+          notifyListeners();
+        });
+
+        appAuth.logOut();
+
+        Fluttertoast.showToast(
+            msg: "User does not exist. Register first!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0);
+
+        return authState;
+      }
+
+      await appDatabase.initializeUserDatabase(userAdapter.uid);   
+      initializeListeners();
+      notifyListeners();
+
+      print(authState);
+    } catch (E) {
+      print("error");
+      print(E.toString());
+      authState = AuthState.InvalidLogIn;
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        authState = AuthState.LoggedOut;
+
+        print(authState);
+        notifyListeners();
+      });
+    }
+ 
+    return authState;
+
+
+  }
+
 
   signUpPageSignUp(name, email, pass) async {}
 
