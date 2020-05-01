@@ -20,6 +20,6 @@ class User {
     globalBuyListings = [];
     globalSellListings = [];
     globalShareListings = [];
-    userInfo = UserInfo("", "", "");
+    userInfo = UserInfo();
   }
 }

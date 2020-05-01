@@ -4,6 +4,7 @@ import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/ScopedModels/app_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'HomePage.dart';
 
@@ -16,7 +17,16 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController password2Controller = TextEditingController();
+  TextEditingController bioController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController phoneNumber2Controller = TextEditingController();
+
+  String address = "";
+  String addressLatitude = "";
+  String addressLongitude = "";
+
   double safePadding = 0;
 
   ScrollController sc = ScrollController();
@@ -81,31 +91,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
-                            flex: 3,
+                            flex: 1,
                             child: Container(
                                 width: Globals.width,
                                 child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Container(
-                                        height: Globals.dheight * 130,
-                                        child: Image.asset(
-                                          "assets/app_icons/google.png",
-                                          height: Globals.dheight * 160,
-                                          scale: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            color: Colors.greenAccent[400],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(1000))),
-                                      ),
-                                      SizedBox(height: Globals.dheight * 25),
                                       Column(
                                         children: <Widget>[
                                           Text(
                                             "Welcome",
                                             style: TextStyle(
-                                              fontFamily: "QuickSand",
+                                              fontFamily: "Lato",
                                               color: Colors.grey[900],
                                               fontWeight: FontWeight.bold,
                                               fontSize: 40,
@@ -114,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           Text(
                                             "Sign-up",
                                             style: TextStyle(
-                                              fontFamily: "QuickSand",
+                                              fontFamily: "Lato",
                                               color: Colors.grey[900],
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
@@ -139,6 +136,32 @@ class _SignUpPageState extends State<SignUpPage> {
                                             MainAxisAlignment.spaceEvenly,
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
+                                          // Container(
+                                          //   margin: EdgeInsets.symmetric(
+                                          //       vertical: Globals.dheight * 7),
+                                          //   height: Globals.dheight * 50,
+                                          //   decoration: BoxDecoration(
+                                          //       color: Colors.grey[350],
+                                          //       borderRadius: BorderRadius.all(
+                                          //           Radius.circular(10)),
+                                          //       border: Border.all(
+                                          //           color: Colors.grey[400])),
+                                          //   padding: EdgeInsets.only(
+                                          //       left: 10,
+                                          //       right: 10,
+                                          //       bottom: 10),
+                                          //   width: Globals.width * 0.8,
+                                          //   child: Center(
+                                          //     child: TextField(
+                                          //       style: TextStyle(
+                                          //           fontFamily: "Lato"),
+                                          //       controller: nameController,
+                                          //       decoration: new InputDecoration
+                                          //               .collapsed(
+                                          //           hintText: 'Name'),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                           Container(
                                             margin: EdgeInsets.symmetric(
                                                 vertical: Globals.dheight * 7),
@@ -156,34 +179,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                             width: Globals.width * 0.8,
                                             child: Center(
                                               child: TextField(
+                                                keyboardType:
+                                                    TextInputType.emailAddress,
                                                 style: TextStyle(
-                                                    fontFamily: "QuickSand"),
-                                                controller: nameController,
-                                                decoration: new InputDecoration
-                                                        .collapsed(
-                                                    hintText: 'Username'),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: Globals.dheight * 7),
-                                            height: Globals.dheight * 50,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[350],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey[400])),
-                                            padding: EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                bottom: 10),
-                                            width: Globals.width * 0.8,
-                                            child: Center(
-                                              child: TextField(
-                                                style: TextStyle(
-                                                    fontFamily: "QuickSand"),
+                                                    fontFamily: "Lato"),
                                                 controller: emailController,
                                                 decoration: new InputDecoration
                                                         .collapsed(
@@ -206,10 +205,144 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 right: 10,
                                                 bottom: 10),
                                             width: Globals.width * 0.8,
+                                            child: InkWell(
+                                              onTap: () async {
+                                                print("choose from map");
+                                              },
+                                              child: Center(
+                                                child: Stack(
+                                                  children: <Widget>[
+                                                    TextField(
+                                                      enabled: false,
+                                                      style: TextStyle(
+                                                          fontFamily: "Lato"),
+                                                      controller:
+                                                          addressController,
+                                                      decoration:
+                                                          new InputDecoration
+                                                                  .collapsed(
+                                                              hintText:
+                                                                  'Address'),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: FaIcon(
+                                                          FontAwesomeIcons.mapMarked,
+                                                          color:
+                                                              Colors.grey[600]),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: Globals.dheight * 7),
+                                            height: Globals.dheight * 50,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                border: Border.all(
+                                                    color: Colors.grey[400])),
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            width: Globals.width * 0.8,
+                                            child: Center(
+                                              child: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                style: TextStyle(
+                                                    fontFamily: "Lato"),
+                                                controller:
+                                                    phoneNumberController,
+                                                decoration: new InputDecoration
+                                                        .collapsed(
+                                                    hintText:
+                                                        'Main Phone Number'),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: Globals.dheight * 7),
+                                            height: Globals.dheight * 50,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                border: Border.all(
+                                                    color: Colors.grey[400])),
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            width: Globals.width * 0.8,
+                                            child: Center(
+                                              child: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                style: TextStyle(
+                                                    fontFamily: "Lato"),
+                                                controller:
+                                                    phoneNumber2Controller,
+                                                decoration: new InputDecoration
+                                                        .collapsed(
+                                                    hintText:
+                                                        'Alt Phone Number (Optional)'),
+                                              ),
+                                            ),
+                                          ),
+
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: Globals.dheight * 7),
+                                            height: Globals.dheight * 50 * 1.5,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                border: Border.all(
+                                                    color: Colors.grey[400])),
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            width: Globals.width * 0.8,
+                                            child: Center(
+                                              child: TextField(
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    fontFamily: "Lato"),
+                                                controller: bioController,
+                                                decoration: new InputDecoration
+                                                    .collapsed(hintText: 'Bio'),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: Globals.dheight * 7),
+                                            height: Globals.dheight * 50,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                border: Border.all(
+                                                    color: Colors.grey[400])),
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            width: Globals.width * 0.8,
                                             child: Center(
                                               child: TextField(
                                                 style: TextStyle(
-                                                    fontFamily: "QuickSand"),
+                                                    fontFamily: "Lato"),
                                                 obscureText: true,
                                                 controller: passwordController,
                                                 decoration: new InputDecoration
@@ -236,7 +369,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             child: Center(
                                               child: TextField(
                                                 style: TextStyle(
-                                                    fontFamily: "QuickSand"),
+                                                    fontFamily: "Lato"),
                                                 obscureText: true,
                                                 controller: password2Controller,
                                                 decoration: new InputDecoration
@@ -246,138 +379,21 @@ class _SignUpPageState extends State<SignUpPage> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: Globals.dheight * 7),
-                                            width: Globals.width * 0.8,
-                                            child: MaterialButton(
-                                              enableFeedback:
-                                                  (appModel.signUpState ==
-                                                      SignUpState.NotSignedUp),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10))),
-                                              onPressed: ((emailController.text
-                                                              .toString()
-                                                              .length ==
-                                                          0 ||
-                                                      passwordController.text
-                                                              .toString()
-                                                              .length ==
-                                                          0 ||
-                                                      nameController.text
-                                                              .toString()
-                                                              .length ==
-                                                          0 ||
-                                                      password2Controller.text
-                                                              .toString()
-                                                              .length ==
-                                                          0 ||
-                                                      password2Controller.text
-                                                              .toString() !=
-                                                          passwordController
-                                                              .text
-                                                              .toString()))
-                                                  ? null
-                                                  : () async {
-                                                      FocusScope.of(context)
-                                                          .requestFocus(
-                                                              FocusNode());
-                                                      print("sign up pressed");
-                                                      if (appModel
-                                                              .signUpState ==
-                                                          SignUpState
-                                                              .InvalidSignUp)
-                                                        return;
-                                                      var success = await appModel
-                                                          .signUpPageSignUp(
-                                                              nameController
-                                                                  .text,
-                                                              emailController
-                                                                  .text,
-                                                              passwordController
-                                                                  .text);
-                                                      setState(() {});
-                                                      if (success ==
-                                                          SignUpState
-                                                              .SignedUp) {
-                                                        Navigator.pushReplacement(
-                                                            context,
-                                                            new MaterialPageRoute(
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    HomePage()));
-                                                      }
-                                                    },
-                                              disabledColor:
-                                                  Colors.greenAccent[400],
-                                              color: (appModel.signUpState ==
-                                                      SignUpState.InvalidSignUp)
-                                                  ? Colors.red
-                                                  : Colors.greenAccent[400],
-                                              height: Globals.dheight * 50,
-                                              minWidth: Globals.width * 0.8,
-                                              child: Center(
-                                                child: (appModel.signUpState ==
-                                                            SignUpState
-                                                                .NotSignedUp ||
-                                                        appModel.signUpState ==
-                                                            SignUpState
-                                                                .SignedUp)
-                                                    ? Text(
-                                                        "CONTINUE",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "QuickSand",
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                      )
-                                                    : (appModel.signUpState ==
-                                                            SignUpState
-                                                                .SigningUp)
-                                                        ? JumpingText("...",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "QuickSand",
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 35))
-                                                        : Text(
-                                                            "INVALID",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "QuickSand",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 18),
-                                                          ),
-                                              ),
-                                            ),
-                                          )
                                         ]),
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
-                                        Center(
-                                            child: Text(
-                                          "or sign up with",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey[900],
-                                              fontSize: 18),
-                                        )),
-                                        SizedBox(height: Globals.dheight * 9),
+                                        // Center(
+                                        //     child: Text(
+                                        //   "or sign up with",
+                                        //   style: TextStyle(
+                                        //       fontFamily: "Lato",
+                                        //       fontWeight: FontWeight.w600,
+                                        //       color: Colors.grey[900],
+                                        //       fontSize: 18),
+                                        // )),
+                                        // SizedBox(height: Globals.dheight * 9),
                                         Container(
                                           width: Globals.width * 0.8,
                                           child: Row(
@@ -402,7 +418,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                                             .InvalidSignUp)
                                                       return;
                                                     var success = await appModel
-                                                        .signUpPageGoogleSignUp();
+                                                        .signUpPageGoogleSignUp(
+                                                            address,
+                                                            addressLatitude,
+                                                            addressLongitude,
+                                                            bioController.text,
+                                                            phoneNumberController
+                                                                .text,
+                                                            phoneNumber2Controller
+                                                                .text);
                                                     if (success ==
                                                             SignUpState
                                                                 .SignedUpWithGoogle ||
@@ -444,8 +468,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       Text(
                                                         "GOOGLE",
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                "QuickSand",
+                                                            fontFamily: "Lato",
                                                             color: Colors.white,
                                                             fontSize: 17),
                                                       )
@@ -464,7 +487,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         Text(
                                           "Already have an account? ",
                                           style: TextStyle(
-                                              fontFamily: "QuickSand",
+                                              fontFamily: "Lato",
                                               color: Colors.grey[900],
                                               fontSize: 17),
                                         ),
@@ -475,7 +498,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           child: Text(
                                             "Log-in",
                                             style: TextStyle(
-                                                fontFamily: "QuickSand",
+                                                fontFamily: "Lato",
                                                 color: Colors.blue,
                                                 fontSize: 17),
                                           ),

@@ -1,27 +1,54 @@
 class UserInfo {
-  // String uid;
-  String name;
-  String email;
-  // String username;
-  // String bio;
-  String ppLink;
+  String name = "";
+  String email = "";
+  String bio = "";
+  String address = "";
+  String ppLink = "";
+  String mainPhoneNumber = "";
+  String altPhoneNumber = "";
+  String addressLatitude = "";
+  String addressLongitude = "";
 
-  UserInfo(this.name, this.email, this.ppLink);
+  UserInfo();
+
+  createUserInfo(String name, String bio, String ppLink, String mainPhoneNumber,
+      String altPhoneNumber, String addressLatitude, String addressLongitude) {
+    this.name = name;
+    this.bio = bio;
+    this.email = email;
+    this.address = address;
+    this.ppLink = ppLink;
+    this.mainPhoneNumber = mainPhoneNumber;
+    this.altPhoneNumber = altPhoneNumber;
+    this.addressLatitude = addressLatitude;
+    this.addressLongitude = addressLongitude;
+
+    return this;
+  }
 
   Map<String, dynamic> toJson() => {
         // '"uid"': '"$uid"',
         '"name"': '"$name"',
         '"email"': '"$email"',
-        // '"username"': '"$username"',
-        // '"bio"': '"$bio"',
-        '"ppID"': '"$ppLink"',
+        '"address"': '"$address"',
+        '"bio"': '"$bio"',
+        '"ppLink"': '"$ppLink"',
+        '"mainPhoneNumber"': '"$mainPhoneNumber"',
+        '"altPhoneNumber"': '"$altPhoneNumber"',
+
+        '"addressLatitude"': '"$addressLatitude"',
+        '"addressLongitude"': '"$addressLongitude"',
       };
 
   UserInfo.fromJson(Map<String, dynamic> json)
       : //uid = json["uid"],
         name = json["name"],
         email = json["email"],
-        // username = json["username"],
-        // bio = json["bio"],
+        address = json["address"],
+        bio = json["bio"],
+        mainPhoneNumber = json["mainPhoneNumber"],
+        altPhoneNumber = json["altPhoneNumber"],
+        addressLongitude = json["addressLongitude"],
+        addressLatitude = json["addressLatitude"],
         ppLink = json["ppLink"];
 }

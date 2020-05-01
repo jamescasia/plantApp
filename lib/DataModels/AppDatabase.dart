@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
- 
+
 import 'package:plantApp/DataModels/UserInfo.dart';
 
 class AppDatabase {
@@ -26,10 +26,23 @@ class AppDatabase {
     personalUserRef = fDatabase.reference().child('App/UserData/${uid}');
   }
 
-  addNewUser(String name, String email, String uid, String ppLink) {
-    usersRef.child(uid).set(email); 
-    userDataRef.child(uid).set({  
-      "UserInfo": UserInfo(name, email, ppLink).toJson(), 
+  addNewUser(
+      String name,
+      String email,
+      String uid,
+      String ppLink,
+      String bio,
+      String mainPhoneNumber,
+      String altPhoneNumber,
+      String address,
+      String addressLatitude,
+      String addressLongitude) {
+    usersRef.child(uid).set(email);
+    userDataRef.child(uid).set({
+      "UserInfo": UserInfo()
+          .createUserInfo(name, bio, ppLink, mainPhoneNumber, altPhoneNumber,
+              addressLatitude, addressLongitude)
+          .toJson(),
     });
   }
 
@@ -183,20 +196,18 @@ class AppDatabase {
   //   personalUserRef.child('Stats').set(stats.toJson());
   // }
 
-  // fetchUserInfo(String uid) async {
-  //   UserInfo userInfo;
+  fetchUserInfo(String uid) async {
+    UserInfo userInfo;
 
-  //   try {
-  //     await personalUserRef.child("UserInfo").once().then((data) {
-  //       userInfo = UserInfo.fromJson(jsonDecode(data.value.toString()));
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return userInfo;
-  // }
-
-  
+    try {
+      await personalUserRef.child("UserInfo").once().then((data) {
+        userInfo = UserInfo.fromJson(jsonDecode(data.value.toString()));
+      });
+    } catch (e) {
+      print(e);
+    }
+    return userInfo;
+  }
 
   // userExistsThruEmail(String email) async {
   //   var exists = false;

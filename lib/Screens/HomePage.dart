@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:plantApp/DataModels/Globals.dart';
-import 'package:plantApp/helpers/scroll_behaviour.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:plantApp/Screens/elements/ImageTile.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:plantApp/DataModels/Globals.dart';
+import 'package:plantApp/Screens/elements/ImageTile.dart';
+import 'package:plantApp/helpers/scroll_behaviour.dart';
+
+import 'ProfilePage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -75,8 +77,28 @@ class _HomePageState extends State<HomePage> {
                             title: Container(
                               color: Globals.grayHomeBg,
                               child: Container(
+                                  // color:Colors.pink,
                                   child: Stack(
                                 children: <Widget>[
+                                  Positioned(
+                                    top: Globals.dheight * 100,
+                                    right: Globals.dwidth * 10,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ProfilePage()));
+                                      },
+                                      child: FaIcon(
+                                        FontAwesomeIcons.user,
+                                        color: Colors.grey[400],
+                                        size: Globals.dwidth * 17,
+                                      ),
+                                    ),
+                                  ),
                                   Positioned(
                                     bottom: 0,
                                     right: 0,

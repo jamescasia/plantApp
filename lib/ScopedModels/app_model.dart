@@ -10,10 +10,8 @@ class AppModel extends Model {
   AppDatabase appDatabase;
   AuthState authState = AuthState.LoggedOut;
   SignUpState signUpState = SignUpState.NotSignedUp;
-  AppModel(){
-
+  AppModel() {
     initialize();
-    
   }
   initialize() {
     userAdapter = UserAdapter();
@@ -50,7 +48,6 @@ class AppModel extends Model {
   }
 
   logInScreenGoogleLogIn() async {
-
     try {
       authState = AuthState.LoggingIn;
       print(authState);
@@ -83,7 +80,9 @@ class AppModel extends Model {
         return authState;
       }
 
-      await appDatabase.initializeUserDatabase(userAdapter.uid);   
+      await appDatabase.initializeUserDatabase(userAdapter.uid);
+      userAdapter.user.userInfo =
+          await appDatabase.fetchUserInfo(userAdapter.uid);
       initializeListeners();
       notifyListeners();
 
@@ -99,16 +98,19 @@ class AppModel extends Model {
         notifyListeners();
       });
     }
- 
+
     return authState;
-
-
   }
-
 
   signUpPageSignUp(name, email, pass) async {}
 
-  signUpPageGoogleSignUp() async {
+  signUpPageGoogleSignUp(
+      String address,
+      String addressLatitude,
+      String addressLongitude,
+      String bio,
+      String mainPhoneNumber,
+      String altPhoneNumber) async {
     appAuth.logOut();
 
     try {
@@ -130,19 +132,26 @@ class AppModel extends Model {
 
         signUpState = SignUpState.SignedUpWithGoogle;
         await appDatabase.initializeUserDatabase(userAdapter.uid);
+        userAdapter.user.userInfo =
+            await appDatabase.fetchUserInfo(userAdapter.uid);
 
         authState = AuthState.LoggedIn;
         initializeListeners();
         notifyListeners();
       } else {
         print(userAdapter.gUser);
- 
 
         await appDatabase.addNewUser(
             userAdapter.gUser.displayName,
             userAdapter.gUser.email.toString(),
             userAdapter.uid,
-            "https://66.media.tumblr.com/31a0dbc0f988a3b66bafcc84e9140283/tumblr_oouogcBENJ1w5mpldo7_250.png");
+            "https://66.media.tumblr.com/31a0dbc0f988a3b66bafcc84e9140283/tumblr_oouogcBENJ1w5mpldo7_250.png",
+            bio,
+            mainPhoneNumber,
+            altPhoneNumber,
+            address,
+            addressLatitude,
+            addressLongitude);
         await appDatabase.initializeUserDatabase(userAdapter.uid);
 
         authState = AuthState.LoggedIn;
@@ -152,9 +161,8 @@ class AppModel extends Model {
         notifyListeners();
       }
     } catch (E) {
-
-        signUpState = SignUpState.InvalidSignUp;
-        authState = AuthState.LoggedOut;
+      signUpState = SignUpState.InvalidSignUp;
+      authState = AuthState.LoggedOut;
       Fluttertoast.showToast(
           msg: "Unexpected Error. Please try again.",
           toastLength: Toast.LENGTH_LONG,
