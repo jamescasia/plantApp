@@ -19,4 +19,5 @@ class Globals {
   static Color contactSellerPurple = Color(0xff7f44e5);
   static Color descGrey = Color(0xff737373);
   static Color addressGreen = Color(0xff4cc163);
+  static Color mildBlack = Color(0xbb000000);
 }

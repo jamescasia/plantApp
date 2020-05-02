@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/Screens/LogInPage.dart';
+import 'package:plantApp/Screens/elements/AddPostPage.dart';
 import 'package:plantApp/Screens/elements/ImageTile.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
 
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   FocusNode searchFnode = FocusNode();
   ScrollController _hideButtonController = ScrollController();
-  bool _isFabVisible = false;
+  bool _isFabVisible = true;
 
   @override
   initState() {
@@ -106,7 +107,13 @@ class _HomePageState extends State<HomePage> {
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(3000))),
-                        onPressed: () {})),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      AddPostPage()));
+                        })),
                 appBar: EmptyAppBar(),
                 body: Container(
                   width: Globals.width,
@@ -278,7 +285,6 @@ class _HomePageState extends State<HomePage> {
                         child: Container(
                           width: Globals.width,
                           color: Colors.white,
-                          height: 2000,
                           padding: EdgeInsets.only(
                               left: Globals.dwidth * 20,
                               right: Globals.dwidth * 20,

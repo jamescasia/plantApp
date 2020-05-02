@@ -15,7 +15,10 @@ class PlantApp extends StatelessWidget {
     return ScopedModel<AppModel>(
         model: AppModel(),
         child: MaterialApp(
-          theme: ThemeData(fontFamily: 'Lato'),
+          theme: ThemeData(
+            fontFamily: 'Lato',
+            primaryColor: Globals.commonGreen,
+          ),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             location_picker.S.delegate,
