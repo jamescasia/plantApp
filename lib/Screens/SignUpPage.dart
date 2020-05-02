@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/ScopedModels/app_model.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import 'dart:async';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'HomePage.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -122,7 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ])),
                           ),
                           Expanded(
-                            flex: 5,
+                            flex: 8,
                             child: Container(
                                 // color: Colors.red,
                                 width: Globals.width,
@@ -162,81 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           //     ),
                                           //   ),
                                           // ),
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: Globals.dheight * 7),
-                                            height: Globals.dheight * 50,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[350],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey[400])),
-                                            padding: EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                bottom: 10),
-                                            width: Globals.width * 0.8,
-                                            child: Center(
-                                              child: TextField(
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
-                                                style: TextStyle(
-                                                    fontFamily: "Lato"),
-                                                controller: emailController,
-                                                decoration: new InputDecoration
-                                                        .collapsed(
-                                                    hintText: 'Email address'),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: Globals.dheight * 7),
-                                            height: Globals.dheight * 50,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[350],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey[400])),
-                                            padding: EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                bottom: 10),
-                                            width: Globals.width * 0.8,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                print("choose from map");
-                                              },
-                                              child: Center(
-                                                child: Stack(
-                                                  children: <Widget>[
-                                                    TextField(
-                                                      enabled: false,
-                                                      style: TextStyle(
-                                                          fontFamily: "Lato"),
-                                                      controller:
-                                                          addressController,
-                                                      decoration:
-                                                          new InputDecoration
-                                                                  .collapsed(
-                                                              hintText:
-                                                                  'Address'),
-                                                    ),
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: FaIcon(
-                                                          FontAwesomeIcons.mapMarked,
-                                                          color:
-                                                              Colors.grey[600]),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+
                                           Container(
                                             margin: EdgeInsets.symmetric(
                                                 vertical: Globals.dheight * 7),
@@ -301,7 +231,102 @@ class _SignUpPageState extends State<SignUpPage> {
                                           Container(
                                             margin: EdgeInsets.symmetric(
                                                 vertical: Globals.dheight * 7),
-                                            height: Globals.dheight * 50 * 1.5,
+                                            height: Globals.dheight * 50,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                border: Border.all(
+                                                    color: Colors.grey[400])),
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            width: Globals.width * 0.8,
+                                            child: Center(
+                                              child: TextField(
+                                                style: TextStyle(
+                                                    fontFamily: "Lato"),
+                                                controller: addressController,
+                                                decoration: new InputDecoration
+                                                        .collapsed(
+                                                    hintText: 'Address'),
+                                              ),
+                                            ),
+                                          ),
+
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              Text("Get exact\nlocation:",
+                                                  style: TextStyle(
+                                                      fontFamily: "Lato",
+                                                      fontSize: 14)),
+                                              MaterialButton(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                500))),
+                                                minWidth: Globals.dwidth * 20,
+                                                color: Colors.white,
+                                                onPressed: () async {
+                                                  print("choose from map");
+
+                                                  try {
+                                                    LocationResult result =
+                                                        await showLocationPicker(
+                                                            context,
+                                                            'AIzaSyAZsetHVt2lU2W16MWL6hnU7pSf57fCBJE');
+
+                                                    addressLongitude = result
+                                                        .latLng.longitude
+                                                        .toString();
+                                                    addressLatitude = result
+                                                        .latLng.latitude
+                                                        .toString();
+
+                                                    setState(() {});
+
+                                                    print("done picking");
+                                                    print(address);
+                                                    print(addressLatitude);
+                                                    print(addressLongitude);
+                                                  } catch (e) {
+                                                    Fluttertoast.showToast(
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.white,
+                                                        msg:
+                                                            "Error getting location. Please try again",
+                                                        toastLength:
+                                                            Toast.LENGTH_LONG,
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        timeInSecForIosWeb: 1,
+                                                        fontSize: 16.0);
+                                                  }
+                                                },
+                                                child: FaIcon(
+                                                    FontAwesomeIcons.mapMarker,
+                                                    color: Colors.red),
+                                              ),
+                                              FaIcon(
+                                                  (addressLatitude == "")
+                                                      ? FontAwesomeIcons
+                                                          .question
+                                                      : FontAwesomeIcons.check,
+                                                  color: (addressLatitude == "")
+                                                      ? Colors.grey[600]
+                                                      : Colors.green)
+                                            ],
+                                          ),
+
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: Globals.dheight * 7),
+                                            height: Globals.dheight * 50 * 1.6,
                                             decoration: BoxDecoration(
                                                 color: Colors.grey[350],
                                                 borderRadius: BorderRadius.all(
@@ -316,66 +341,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                             child: Center(
                                               child: TextField(
                                                 maxLines: 2,
+                                                maxLength: 80,
                                                 style: TextStyle(
                                                     fontFamily: "Lato"),
                                                 controller: bioController,
                                                 decoration: new InputDecoration
                                                     .collapsed(hintText: 'Bio'),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: Globals.dheight * 7),
-                                            height: Globals.dheight * 50,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[350],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey[400])),
-                                            padding: EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                bottom: 10),
-                                            width: Globals.width * 0.8,
-                                            child: Center(
-                                              child: TextField(
-                                                style: TextStyle(
-                                                    fontFamily: "Lato"),
-                                                obscureText: true,
-                                                controller: passwordController,
-                                                decoration: new InputDecoration
-                                                        .collapsed(
-                                                    hintText: 'Password'),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: Globals.dheight * 7),
-                                            height: Globals.dheight * 50,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[350],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey[400])),
-                                            padding: EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                                bottom: 10),
-                                            width: Globals.width * 0.8,
-                                            child: Center(
-                                              child: TextField(
-                                                style: TextStyle(
-                                                    fontFamily: "Lato"),
-                                                obscureText: true,
-                                                controller: password2Controller,
-                                                decoration: new InputDecoration
-                                                        .collapsed(
-                                                    hintText:
-                                                        'Re-enter password'),
                                               ),
                                             ),
                                           ),
@@ -409,6 +380,30 @@ class _SignUpPageState extends State<SignUpPage> {
                                                               Radius.circular(
                                                                   6))),
                                                   onPressed: () async {
+                                                    if (phoneNumberController
+                                                                .text ==
+                                                            "" ||
+                                                        phoneNumberController
+                                                                .text.length !=
+                                                            11 ||
+                                                        bioController.text ==
+                                                            "" ||
+                                                        addressLatitude == "") {
+                                                      Fluttertoast.showToast(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          textColor:
+                                                              Colors.white,
+                                                          msg:
+                                                              "ERROR: Some fields left empty. Please try again.",
+                                                          toastLength:
+                                                              Toast.LENGTH_LONG,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
+                                                          timeInSecForIosWeb: 1,
+                                                          fontSize: 16.0);
+                                                      return;
+                                                    }
                                                     FocusScope.of(context)
                                                         .requestFocus(
                                                             FocusNode());
@@ -419,7 +414,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       return;
                                                     var success = await appModel
                                                         .signUpPageGoogleSignUp(
-                                                            address,
+                                                            addressController
+                                                                .text,
                                                             addressLatitude,
                                                             addressLongitude,
                                                             bioController.text,

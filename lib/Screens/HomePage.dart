@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
+import 'package:plantApp/Screens/LogInPage.dart';
 import 'package:plantApp/Screens/elements/ImageTile.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
 
+import 'package:scoped_model/scoped_model.dart';
+import 'package:plantApp/ScopedModels/app_model.dart';
 import 'ProfilePage.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,204 +43,271 @@ class _HomePageState extends State<HomePage> {
   double safePadding;
   TextEditingController searchController = TextEditingController();
   FocusNode searchFnode = FocusNode();
+  ScrollController _hideButtonController = ScrollController();
+  bool _isFabVisible = false;
+
+  @override
+  initState() {
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (_isFabVisible == true) {
+          setState(() {
+            _isFabVisible = false;
+          });
+        }
+      } else {
+        if (_hideButtonController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (_isFabVisible == false) {
+            setState(() {
+              _isFabVisible = true;
+            });
+          }
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Globals.dheight = MediaQuery.of(context).size.height / 793;
     Globals.dwidth = MediaQuery.of(context).size.width / 393;
     Globals.maxHeight = MediaQuery.of(context).size.height;
     Globals.maxWidth = MediaQuery.of(context).size.width;
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Globals.grayHomeBg,
         systemNavigationBarColor: Globals.grayHomeBg
         // #61C350
         ));
-    return ScrollConfiguration(
-      behavior: CustomScrollBehaviour(),
-      child: SafeArea(
-        child: LayoutBuilder(builder: (context, constraints) {
-          safePadding = Globals.maxHeight - constraints.maxHeight;
-          Globals.height = constraints.maxHeight;
-          Globals.width = constraints.maxWidth;
-          return Scaffold(
-            body: Container(
-              width: Globals.width,
-              height: Globals.height,
-              color: Globals.grayHomeBg,
-              child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        expandedHeight: Globals.height * (1 - (1 / 1.618)),
-                        floating: false,
-                        pinned: false,
-                        backgroundColor: Colors.white.withAlpha(0),
-                        flexibleSpace: FlexibleSpaceBar(
-                            collapseMode: CollapseMode.parallax,
-                            centerTitle: true,
-                            title: Container(
-                              color: Globals.grayHomeBg,
-                              child: Container(
-                                  // color:Colors.pink,
-                                  child: Stack(
-                                children: <Widget>[
-                                  Positioned(
-                                    top: Globals.dheight * 100,
-                                    right: Globals.dwidth * 10,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        ProfilePage()));
-                                      },
-                                      child: FaIcon(
-                                        FontAwesomeIcons.user,
-                                        color: Colors.grey[400],
-                                        size: Globals.dwidth * 17,
+    return ScopedModelDescendant<AppModel>(builder: (context, child, appModel) {
+      return Material(
+        child: ScrollConfiguration(
+          behavior: CustomScrollBehaviour(),
+          child: SafeArea(
+            child: LayoutBuilder(builder: (context, constraints) {
+              safePadding = Globals.maxHeight - constraints.maxHeight;
+              Globals.height = constraints.maxHeight;
+              Globals.width = constraints.maxWidth;
+              return Scaffold(
+                floatingActionButton: Visibility(
+                    visible: _isFabVisible,
+                    child: MaterialButton(
+                        elevation: 5,
+                        minWidth: Globals.dwidth * 65,
+                        height: Globals.dwidth * 65,
+                        color: Colors.greenAccent,
+                        child: FaIcon(
+                          FontAwesomeIcons.plus,
+                          color: Colors.white,
+                          size: Globals.dheight * 30,
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3000))),
+                        onPressed: () {})),
+                appBar: EmptyAppBar(),
+                body: Container(
+                  width: Globals.width,
+                  height: Globals.height,
+                  color: Globals.grayHomeBg,
+                  child: NestedScrollView(
+                      controller: _hideButtonController,
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          SliverAppBar(
+                            automaticallyImplyLeading: false,
+                            expandedHeight: Globals.height * (1 - (1 / 1.618)),
+                            floating: false,
+                            pinned: false,
+                            backgroundColor: Colors.white.withAlpha(0),
+                            flexibleSpace: FlexibleSpaceBar(
+                                collapseMode: CollapseMode.parallax,
+                                centerTitle: true,
+                                title: Container(
+                                  color: Globals.grayHomeBg,
+                                  child: Container(
+                                      // color:Colors.pink,
+                                      child: Stack(
+                                    children: <Widget>[
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        child: Container(
+                                          child: Image.asset(
+                                            "assets/images/home-vector.png",
+                                            width: Globals.width * 0.58,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Container(
-                                      child: Image.asset(
-                                        "assets/images/home-vector.png",
-                                        width: Globals.width * 0.58,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                      bottom: Globals.dheight * 22,
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Card(
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(3000))),
-                                            child: Container(
-                                                width: Globals.width * 0.5,
-                                                height: Globals.dheight * 30,
-                                                child: Stack(
-                                                  children: <Widget>[
-                                                    Positioned(
-                                                      left: 10,
-                                                      top: -10,
-                                                      child: Container(
-                                                        width: Globals.width,
-                                                        child: TextField(
-                                                          focusNode:
-                                                              searchFnode,
-                                                          maxLines: 1,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          textAlignVertical:
-                                                              TextAlignVertical
-                                                                  .top,
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Lato",
-                                                              fontSize: 12,
-                                                              color: Colors
-                                                                  .grey[500]),
-                                                          controller:
-                                                              searchController,
-                                                          decoration: new InputDecoration
-                                                                  .collapsed(
-                                                              hintStyle: TextStyle(
+                                      Positioned.fill(
+                                          bottom: Globals.dheight * 22,
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Card(
+                                                elevation: 2,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                3000))),
+                                                child: Container(
+                                                    width: Globals.width * 0.5,
+                                                    height:
+                                                        Globals.dheight * 30,
+                                                    child: Stack(
+                                                      children: <Widget>[
+                                                        Positioned(
+                                                          left: 10,
+                                                          top: -10,
+                                                          child: Container(
+                                                            width:
+                                                                Globals.width,
+                                                            child: TextField(
+                                                              focusNode:
+                                                                  searchFnode,
+                                                              maxLines: 1,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              textAlignVertical:
+                                                                  TextAlignVertical
+                                                                      .top,
+                                                              style: TextStyle(
                                                                   fontFamily:
                                                                       "Lato",
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                           .grey[
                                                                       500]),
-                                                              hintText:
-                                                                  'What are you looking for?'),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    // Expanded(child: InkWell(
-                                                    //   onTap: (){
-                                                    //     FocusScope.of(context).nextFocus();
-                                                    //   },
-
-                                                    // )),
-                                                    Positioned(
-                                                      right: 0,
-                                                      child: InkWell(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    3000)),
-                                                        onTap: () {},
-                                                        child: Container(
-                                                          height:
-                                                              Globals.dheight *
-                                                                  30,
-                                                          width:
-                                                              Globals.dheight *
-                                                                  30,
-                                                          child: Center(
-                                                            child: FaIcon(
-                                                                Icons.search,
-                                                                size: Globals
-                                                                        .dheight *
-                                                                    16,
-                                                                color: Colors
-                                                                    .grey[300]),
+                                                              controller:
+                                                                  searchController,
+                                                              decoration: new InputDecoration
+                                                                      .collapsed(
+                                                                  hintStyle: TextStyle(
+                                                                      fontFamily:
+                                                                          "Lato",
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          500]),
+                                                                  hintText:
+                                                                      'What are you looking for?'),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ))),
-                                      ))
-                                ],
-                              )),
-                            )),
-                      ),
-                    ];
-                  },
-                  body: ClipRRect(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(40),
-                    ),
+                                                        // Expanded(child: InkWell(
+                                                        //   onTap: (){
+                                                        //     FocusScope.of(context).nextFocus();
+                                                        //   },
 
-                    child: Container(
-                      width: Globals.width,
-                      color: Colors.white,
-                      height: 2000,
-                      padding: EdgeInsets.only(
-                          left: Globals.dwidth * 20,
-                          right: Globals.dwidth * 20,
-                          top: Globals.dwidth * 0),
-                      child: StaggeredGridView.countBuilder(
-                        scrollDirection: Axis.vertical,
-                        crossAxisCount: 2,
-                        itemCount: images.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ImageTile(images[index], index),
-                        staggeredTileBuilder: (int index) =>
-                            new StaggeredTile.count(
-                                1, (index % 2 == 0) ? 1.66 : 1.33),
-                        mainAxisSpacing: Globals.dwidth * 20,
-                        crossAxisSpacing: Globals.dwidth * 20,
-                      ),
-                    ),
+                                                        // )),
+                                                        Positioned(
+                                                          right: 0,
+                                                          child: InkWell(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        3000)),
+                                                            onTap: () {},
+                                                            child: Container(
+                                                              height: Globals
+                                                                      .dheight *
+                                                                  30,
+                                                              width: Globals
+                                                                      .dheight *
+                                                                  30,
+                                                              child: Center(
+                                                                child: FaIcon(
+                                                                    Icons
+                                                                        .search,
+                                                                    size: Globals
+                                                                            .dheight *
+                                                                        16,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        300]),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ))),
+                                          )),
+                                      Positioned(
+                                        top: Globals.dheight * 100,
+                                        right: Globals.dwidth * 10,
+                                        child: InkWell(
+                                          highlightColor: Colors.yellow,
+                                          splashColor: Colors.yellow,
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                new MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ProfilePage()));
+                                          },
+                                          child: Container(
+                                            width: Globals.dwidth * 30,
+                                            height: Globals.dwidth * 30,
+                                            child: Center(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.user,
+                                                color: Colors.grey[400],
+                                                size: Globals.dwidth * 17,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                )),
+                          ),
+                        ];
+                      },
+                      body: ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(40),
+                        ),
 
-                    // Example01()
+                        child: Container(
+                          width: Globals.width,
+                          color: Colors.white,
+                          height: 2000,
+                          padding: EdgeInsets.only(
+                              left: Globals.dwidth * 20,
+                              right: Globals.dwidth * 20,
+                              top: Globals.dwidth * 0),
+                          child: StaggeredGridView.countBuilder(
+                            scrollDirection: Axis.vertical,
+                            crossAxisCount: 2,
+                            itemCount: images.length,
+                            itemBuilder: (BuildContext context, int index) =>
+                                ImageTile(images[index], index),
+                            staggeredTileBuilder: (int index) =>
+                                new StaggeredTile.count(
+                                    1, (index % 2 == 0) ? 1.66 : 1.33),
+                            mainAxisSpacing: Globals.dwidth * 20,
+                            crossAxisSpacing: Globals.dwidth * 20,
+                          ),
+                        ),
 
-                    // StaggeredGridView.builder(
-                    //     gridDelegate: null, itemBuilder: null)
-                  )),
-            ),
-          );
-        }),
-      ),
-    );
+                        // Example01()
+
+                        // StaggeredGridView.builder(
+                        //     gridDelegate: null, itemBuilder: null)
+                      )),
+                ),
+              );
+            }),
+          ),
+        ),
+      );
+    });
   }
 }

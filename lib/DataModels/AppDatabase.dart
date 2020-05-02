@@ -40,8 +40,8 @@ class AppDatabase {
     usersRef.child(uid).set(email);
     userDataRef.child(uid).set({
       "UserInfo": UserInfo()
-          .createUserInfo(name, bio, ppLink, mainPhoneNumber, altPhoneNumber,
-              addressLatitude, addressLongitude)
+          .createUserInfo(name, email, bio, ppLink, mainPhoneNumber,
+              altPhoneNumber,address, addressLatitude, addressLongitude)
           .toJson(),
     });
   }

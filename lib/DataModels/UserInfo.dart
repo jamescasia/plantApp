@@ -11,8 +11,8 @@ class UserInfo {
 
   UserInfo();
 
-  createUserInfo(String name, String bio, String ppLink, String mainPhoneNumber,
-      String altPhoneNumber, String addressLatitude, String addressLongitude) {
+  createUserInfo(String name, String email, String bio, String ppLink, String mainPhoneNumber,
+      String altPhoneNumber, String address, String addressLatitude, String addressLongitude) {
     this.name = name;
     this.bio = bio;
     this.email = email;
@@ -22,6 +22,7 @@ class UserInfo {
     this.altPhoneNumber = altPhoneNumber;
     this.addressLatitude = addressLatitude;
     this.addressLongitude = addressLongitude;
+    this.address = address;
 
     return this;
   }
@@ -34,8 +35,7 @@ class UserInfo {
         '"bio"': '"$bio"',
         '"ppLink"': '"$ppLink"',
         '"mainPhoneNumber"': '"$mainPhoneNumber"',
-        '"altPhoneNumber"': '"$altPhoneNumber"',
-
+        '"altPhoneNumber"': '"$altPhoneNumber"', 
         '"addressLatitude"': '"$addressLatitude"',
         '"addressLongitude"': '"$addressLongitude"',
       };
@@ -43,12 +43,12 @@ class UserInfo {
   UserInfo.fromJson(Map<String, dynamic> json)
       : //uid = json["uid"],
         name = json["name"],
-        email = json["email"],
-        address = json["address"],
+        email = json["email"], 
         bio = json["bio"],
         mainPhoneNumber = json["mainPhoneNumber"],
         altPhoneNumber = json["altPhoneNumber"],
         addressLongitude = json["addressLongitude"],
         addressLatitude = json["addressLatitude"],
+        address = json["address"],
         ppLink = json["ppLink"];
 }

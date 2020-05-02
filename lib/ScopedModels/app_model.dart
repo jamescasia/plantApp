@@ -154,6 +154,9 @@ class AppModel extends Model {
             addressLongitude);
         await appDatabase.initializeUserDatabase(userAdapter.uid);
 
+        userAdapter.user.userInfo =
+            await appDatabase.fetchUserInfo(userAdapter.uid);
+
         authState = AuthState.LoggedIn;
         initializeListeners();
 
