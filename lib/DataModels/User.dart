@@ -1,25 +1,17 @@
-import 'UserInfo.dart';
 import 'Listing.dart';
+import 'UserInfo.dart';
 
 class User {
   UserInfo userInfo;
-  List<ListingBuying> userBuyListings = [];
-  List<ListingSelling> userSellListings = [];
-  List<ListingSharing> userShareListings = [];
 
-  List<ListingBuying> globalBuyListings = [];
-  List<ListingSelling> globalSellListings = [];
-  List<ListingSharing> globalShareListings = [];
+  List<ListingBuying> buyListings = [];
+  List<ListingSelling> sellListings = [];
+  List<ListingSharing> shareListings = [];
 
-  User(){
-
-    userBuyListings = [];
-    userSellListings = [];
-    userShareListings = [];
-
-    globalBuyListings = [];
-    globalSellListings = [];
-    globalShareListings = [];
+  User() {
+    buyListings = [];
+    sellListings = [];
+    shareListings = [];
     userInfo = UserInfo();
   }
 }
