@@ -1,3 +1,4 @@
+import 'package:plantApp/DataModels/Listing.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:plantApp/UtilityModels/UserAdapter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -176,6 +177,16 @@ class AppModel extends Model {
 
     print(signUpState);
     return signUpState;
+  }
+
+  addPostPageAddNewSellListing(ListingSelling listing) async {
+    bool success = true;
+    try {
+      await appDatabase.addNewSellListing(listing);
+    } catch (e) {
+      success = false;
+    }
+    return success;
   }
 }
 

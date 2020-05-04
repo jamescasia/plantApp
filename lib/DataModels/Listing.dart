@@ -15,6 +15,7 @@ class ListingSelling {
   bool isDelivery = false;
   bool isCOD = false;
   UserInfo poster;
+  int views = 0;
 
   ListingSelling(
       {this.title,
@@ -48,6 +49,7 @@ class ListingSelling {
         '"isPickup"': '"$isPickup"',
         '"isDelivery"': '"$isDelivery"',
         '"isCOD"': '"$isCOD"',
+        '"views"': '"${views.toString()}"',
         '"poster"': '"${poster.toJson()}"'
       };
 
@@ -69,6 +71,7 @@ class ListingSelling {
         isPickup = json["isPickup"],
         isDelivery = json["isDelivery"],
         isCOD = json["isCOD"],
+        views = int.parse(json["views"]),
         poster = UserInfo.fromJson(json["poster"]);
 }
 
@@ -81,6 +84,7 @@ class ListingBuying {
   String image3Path = "";
   String desc = "";
   double price = 0.0;
+  int views = 0;
   PriceLabel priceLabel = PriceLabel.PerKilo;
   bool isNegotiable = false;
   bool isPickup = false;
@@ -120,6 +124,7 @@ class ListingBuying {
         '"isPickup"': '"$isPickup"',
         '"isDelivery"': '"$isDelivery"',
         '"isCOD"': '"$isCOD"',
+        '"views"': '"${views.toString()}"',
         '"poster"': '"${poster.toJson()}"'
       };
 
@@ -130,6 +135,7 @@ class ListingBuying {
         image1Path = json["image1Path"],
         image2Path = json["image2Path"],
         image3Path = json["image3Path"],
+        views = int.parse(json["views"]),
         desc = json["desc"],
         price = double.parse(json["price"]),
         priceLabel = json["priceLabel"] == '"PerKilo"'
@@ -147,6 +153,7 @@ class ListingBuying {
 class ListingSharing {
   String title = "";
   String id = "";
+  int views = 0;
   String datePosted = "";
 
   String image1Path = "";
@@ -173,6 +180,7 @@ class ListingSharing {
         '"image2Path"': '"$image2Path"',
         '"image3Path"': '"$image3Path"',
         '"desc"': '"$desc"',
+        '"views"': '"${views.toString()}"',
         '"poster"': '"${poster.toJson()}"'
       };
 
@@ -184,6 +192,7 @@ class ListingSharing {
         image2Path = json["image2Path"],
         image3Path = json["image3Path"],
         desc = json["desc"],
+        views = int.parse(json["views"]),
         poster = UserInfo.fromJson(json["poster"]);
 }
 

@@ -1,23 +1,27 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:plantApp/DataModels/Listing.dart';
 import 'package:plantApp/DataModels/UserInfo.dart';
 
 class AppDatabase {
   FirebaseDatabase fDatabase;
   DatabaseReference personalUserRef;
   DatabaseReference userDataRef;
-  DatabaseReference collabTasksRef;
-  DatabaseReference soloTasksRef;
+  DatabaseReference sellListingsRef;
+  DatabaseReference buyListingsRef;
+  DatabaseReference shareListingsRef;
   DatabaseReference usersRef;
   String userId;
 
   AppDatabase() {
     fDatabase = FirebaseDatabase.instance;
     userDataRef = fDatabase.reference().child('App/UserData');
-    // soloTasksRef = fDatabase.reference().child('App/Tasks/SoloTasks');
-    // collabTasksRef = fDatabase.reference().child('App/Tasks/CollabTasks');
+    sellListingsRef = fDatabase.reference().child('App/Listings/SellListings');
+
+    buyListingsRef = fDatabase.reference().child('App/Listings/BuyListings');
+    shareListingsRef =
+        fDatabase.reference().child('App/Listings/ShareListings');
     usersRef = fDatabase.reference().child('App/Users');
   }
 
@@ -41,7 +45,7 @@ class AppDatabase {
     userDataRef.child(uid).set({
       "UserInfo": UserInfo()
           .createUserInfo(name, email, bio, ppLink, mainPhoneNumber,
-              altPhoneNumber,address, addressLatitude, addressLongitude)
+              altPhoneNumber, address, addressLatitude, addressLongitude)
           .toJson(),
     });
   }
@@ -59,6 +63,59 @@ class AppDatabase {
     return exists;
   }
 
+  addNewSellListing(ListingSelling listing) async {
+    var key = personalUserRef.child('SellListings').push().key;
+    listing.id = key;
+    personalUserRef.child('SellListings/$key').set(true);
+    sellListingsRef.child(key).set(listing.toJson());
+  }
+
+  addNewBuyListing(ListingBuying listing) async {
+    var key = personalUserRef.child('BuyListings').push().key;
+    listing.id = key;
+    personalUserRef.child('BuyListings/$key').set(true);
+    buyListingsRef.child(key).set(listing.toJson());
+  }
+
+  addNewShareListing(ListingSharing listing) async {
+    var key = personalUserRef.child('ShareListings').push().key;
+    listing.id = key;
+    personalUserRef.child('ShareListings/$key').set(true);
+    shareListingsRef.child(key).set(listing.toJson());
+  }
+
+  updateSellListing(ListingSelling listing) {
+    sellListingsRef.child(listing.id).set(listing.toJson());
+    print("solo task in json");
+    print(listing.toJson());
+  }
+
+  updateBuyListing(ListingBuying listing) {
+    buyListingsRef.child(listing.id).set(listing.toJson());
+    print("solo task in json");
+    print(listing.toJson());
+  }
+
+  updateShareListing(ListingSharing listing) {
+    shareListingsRef.child(listing.id).set(listing.toJson());
+    print("solo task in json");
+    print(listing.toJson());
+  }
+
+  deleteSellListing(ListingSelling listing) {
+    personalUserRef.child('SellListings/${listing.id}').set(null);
+    sellListingsRef.child(listing.id).set(null);
+  }
+
+  deleteBuyListing(ListingBuying listing) {
+    personalUserRef.child('BuyListings/${listing.id}').set(null);
+    buyListingsRef.child(listing.id).set(null);
+  }
+
+  deleteShareListing(ListingSharing listing) {
+    personalUserRef.child('ShareListings/${listing.id}').set(null);
+    shareListingsRef.child(listing.id).set(null);
+  }
   // addNewSoloTask(SoloTask soloTask) {
   //   var key = personalUserRef.child('SoloTasks').push().key;
   //   print("key");

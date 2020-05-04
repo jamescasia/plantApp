@@ -412,7 +412,7 @@ class _BuyingFormState extends State<BuyingForm> {
                           controller: titleController,
                           maxLength: 64,
                           decoration: new InputDecoration.collapsed(
-                              hintText: 'Iceberg Lettuce',
+                              hintText: 'Type title here',
                               hintStyle: TextStyle(
                                   fontFamily: "Lato", color: Colors.grey[400])),
                         ),
@@ -541,7 +541,7 @@ class _BuyingFormState extends State<BuyingForm> {
                           style: TextStyle(fontFamily: "Lato"),
                           controller: descController,
                           decoration: new InputDecoration.collapsed(
-                              hintText: 'Green Delicious Iceberg Lettuce',
+                              hintText: 'Type description here',
                               hintStyle: TextStyle(
                                   fontFamily: "Lato", color: Colors.grey[400])),
                         ),
@@ -611,7 +611,7 @@ class _SellingFormState extends State<SellingForm> {
                         fontFamily: "Lato",
                         fontSize: Globals.dwidth * 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey[500]),
+                        color: Globals.mildBlack),
                   ),
                   SizedBox(
                     height: Globals.dheight * 7,
@@ -819,7 +819,7 @@ class _SellingFormState extends State<SellingForm> {
                           fontFamily: "Lato",
                           fontSize: Globals.dwidth * 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey[500]),
+                          color: Globals.mildBlack),
                     ),
                     Container(
                       margin:
@@ -837,7 +837,7 @@ class _SellingFormState extends State<SellingForm> {
                           controller: titleController,
                           maxLength: 64,
                           decoration: new InputDecoration.collapsed(
-                              hintText: 'Iceberg Lettuce',
+                              hintText: 'Type title here',
                               hintStyle: TextStyle(
                                   fontFamily: "Lato", color: Colors.grey[400])),
                         ),
@@ -858,7 +858,7 @@ class _SellingFormState extends State<SellingForm> {
                           fontFamily: "Lato",
                           fontSize: Globals.dwidth * 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey[500]),
+                          color: Globals.mildBlack),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -881,7 +881,7 @@ class _SellingFormState extends State<SellingForm> {
                               style: TextStyle(fontFamily: "Lato"),
                               controller: priceController,
                               decoration: new InputDecoration.collapsed(
-                                  hintText: '300',
+                                  hintText: '1000',
                                   hintStyle: TextStyle(
                                       fontFamily: "Lato",
                                       color: Colors.grey[400])),
@@ -947,7 +947,7 @@ class _SellingFormState extends State<SellingForm> {
                           fontFamily: "Lato",
                           fontSize: Globals.dwidth * 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey[500]),
+                          color: Globals.mildBlack),
                     ),
                     Container(
                       margin:
@@ -966,7 +966,7 @@ class _SellingFormState extends State<SellingForm> {
                           style: TextStyle(fontFamily: "Lato"),
                           controller: descController,
                           decoration: new InputDecoration.collapsed(
-                              hintText: 'Green Delicious Iceberg Lettuce',
+                              hintText: 'Type description here',
                               hintStyle: TextStyle(
                                   fontFamily: "Lato", color: Colors.grey[400])),
                         ),
@@ -987,7 +987,7 @@ class _SellingFormState extends State<SellingForm> {
                         fontFamily: "Lato",
                         fontSize: Globals.dwidth * 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey[500]),
+                        color: Globals.mildBlack),
                   ),
                   SizedBox(height: Globals.dheight * 10),
                   Container(
@@ -1024,7 +1024,7 @@ class _SellingFormState extends State<SellingForm> {
                               fontFamily: "Lato",
                               fontSize: Globals.dwidth * 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey[500]),
+                              color: Globals.mildBlack),
                         ),
                         SizedBox(height: Globals.dheight * 10),
                         Container(
@@ -1058,15 +1058,13 @@ class _SellingFormState extends State<SellingForm> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Do you offer COD (Cash on Delivery)?",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontFamily: "Lato",
-                              fontSize: Globals.dwidth * 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[500]),
-                        ),
+                        Text("Do you offer COD (Cash on Delivery)?",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontFamily: "Lato",
+                                fontSize: Globals.dwidth * 16,
+                                fontWeight: FontWeight.w600,
+                                color: Globals.mildBlack)),
                         SizedBox(height: Globals.dheight * 10),
                         Container(
                           width: Globals.width * 0.7,
@@ -1099,15 +1097,13 @@ class _SellingFormState extends State<SellingForm> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Is this negotiable?",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontFamily: "Lato",
-                              fontSize: Globals.dwidth * 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[500]),
-                        ),
+                        Text("Is this negotiable?",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontFamily: "Lato",
+                                fontSize: Globals.dwidth * 16,
+                                fontWeight: FontWeight.w600,
+                                color: Globals.mildBlack)),
                         SizedBox(height: Globals.dheight * 10),
                         Container(
                           width: Globals.width * 0.7,
@@ -1182,6 +1178,8 @@ class _SellingFormState extends State<SellingForm> {
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                   onPressed: () {
                     if (isFormValid()) {
+                      ListingSelling listing = ListingSelling(title:titleController.text, datePosted: DateTime.now().toIso8601String(), desc: descController.text,image1Path: ;
+                      appModel.addPostPageAddNewSellListing(listing);
                     } else {
                       Fluttertoast.showToast(
                           backgroundColor: Colors.red,
@@ -1191,7 +1189,7 @@ class _SellingFormState extends State<SellingForm> {
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
                           fontSize: 16.0);
-                    }
+                    };
                   },
                   minWidth: Globals.width * 0.9,
                   height: Globals.dheight * 50,
