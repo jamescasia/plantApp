@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:plantApp/DataModels/Listing.dart';
 import 'package:plantApp/DataModels/UserInfo.dart';
@@ -12,9 +12,12 @@ class AppDatabase {
   DatabaseReference buyListingsRef;
   DatabaseReference shareListingsRef;
   DatabaseReference usersRef;
+  FirebaseStorage fStorage;
+  StorageReference imagesRef;
   String userId;
 
   AppDatabase() {
+    fStorage = FirebaseStorage.instance;
     fDatabase = FirebaseDatabase.instance;
     userDataRef = fDatabase.reference().child('App/UserData');
     sellListingsRef = fDatabase.reference().child('App/Listings/SellListings');
@@ -23,6 +26,7 @@ class AppDatabase {
     shareListingsRef =
         fDatabase.reference().child('App/Listings/ShareListings');
     usersRef = fDatabase.reference().child('App/Users');
+    imagesRef = fStorage.ref().child('images');
   }
 
   initializeUserDatabase(String uid) {
@@ -116,6 +120,27 @@ class AppDatabase {
     personalUserRef.child('ShareListings/${listing.id}').set(null);
     shareListingsRef.child(listing.id).set(null);
   }
+
+  fetchSellListings() async {
+    List<String> listOfSellListingsIds = [];
+
+    List<ListingSelling> listOfSellListings = [];
+
+    try {
+      await sellListingsRef.once().then((data) async {
+        data.value.forEach((k, value) {
+          ListingSelling ls =
+              ListingSelling.fromJson(jsonDecode(value.toString()));
+          listOfSellListings.add(ls);
+        });
+      });
+    } catch (E) {
+      print("error fetching collab tasks ${E.toString()}");
+    }
+
+    return listOfSellListings;
+  }
+
   // addNewSoloTask(SoloTask soloTask) {
   //   var key = personalUserRef.child('SoloTasks').push().key;
   //   print("key");
@@ -158,45 +183,6 @@ class AppDatabase {
   //   soloTasksRef.child(soloTask.id).set(soloTask.toJson());
   //   print("solo task in json");
   //   print(soloTask.toJson());
-  // }
-
-  // fetchCollabTasks() async {
-  //   List<String> listOfCollabTaskIds = [];
-
-  //   List<CollabTask> listOfCollabTasks = [];
-
-  //   try {
-  //     await personalUserRef.child("CollabTasks").once().then((data) async {
-  //       // print("collabtasks");
-  //       // print(data.value);
-  //       data.value.forEach((k, value) {
-  //         print("dafaf");
-  //         print(k);
-  //         print(value);
-  //         if (!value) {
-  //           listOfCollabTaskIds.add(k.toString());
-  //         }
-  //       });
-  //     });
-
-  //     print(listOfCollabTaskIds);
-
-  //     await collabTasksRef.once().then((data) async {
-  //       data.value.forEach((k, value) {
-  //         // print(k);
-  //         // print(value);
-
-  //         CollabTask cT = CollabTask.fromJson(jsonDecode(value.toString()));
-  //         if (listOfCollabTaskIds.contains(k.toString())) {
-  //           listOfCollabTasks.add(cT);
-  //         }
-  //       });
-  //     });
-  //   } catch (E) {
-  //     print("error fetching collab tasks ${E.toString()}");
-  //   }
-
-  //   return listOfCollabTasks;
   // }
 
   // fetchSoloTasks() async {

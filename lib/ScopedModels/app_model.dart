@@ -4,6 +4,8 @@ import 'package:plantApp/UtilityModels/UserAdapter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plantApp/DataModels/AppAuth.dart';
 import 'package:plantApp/DataModels/AppDatabase.dart';
+import 'package:plantApp/DataModels/AppStorage.dart';
+import 'dart:io';
 
 class AppModel extends Model {
   UserAdapter userAdapter;
@@ -11,6 +13,10 @@ class AppModel extends Model {
   AppDatabase appDatabase;
   AuthState authState = AuthState.LoggedOut;
   SignUpState signUpState = SignUpState.NotSignedUp;
+  AppStorage appStorage;
+  List<String> sellListingsIds = [];
+  List<String> shareListingsIds = [];
+  List<String> buyListingsIds = [];
   AppModel() {
     initialize();
   }
@@ -18,6 +24,11 @@ class AppModel extends Model {
     userAdapter = UserAdapter();
     appAuth = AppAuth();
     appDatabase = AppDatabase();
+    appStorage = AppStorage();
+
+    sellListingsIds = [];
+    shareListingsIds = [];
+    buyListingsIds = [];
   }
 
   cancelListeners() {}
@@ -77,15 +88,12 @@ class AppModel extends Model {
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             fontSize: 16.0);
-
         return authState;
       }
 
-      await appDatabase.initializeUserDatabase(userAdapter.uid);
-      userAdapter.user.userInfo =
-          await appDatabase.fetchUserInfo(userAdapter.uid);
-      initializeListeners();
       notifyListeners();
+
+      await initializeHomePage();
 
       print(authState);
     } catch (E) {
@@ -179,14 +187,61 @@ class AppModel extends Model {
     return signUpState;
   }
 
-  addPostPageAddNewSellListing(ListingSelling listing) async {
+// screen build function calls this one.
+  initializeHomePage() async {
+    await appDatabase.initializeUserDatabase(userAdapter.uid);
+    userAdapter.user.userInfo =
+        await appDatabase.fetchUserInfo(userAdapter.uid);
+
+    await homePageFetchSellListings();
+    initializeListeners();
+  }
+
+  addPostPageAddNewSellListing(
+      ListingSelling listing, File image1, File image2, File image3) async {
     bool success = true;
+    if (image1 != null) {
+      try {
+        listing.image1Path = await appStorage.uploadFileAndRetrieveLink(image1);
+      } catch (e) {
+        return false;
+      }
+    }
+    if (image2 != null) {
+      try {
+        listing.image2Path = await appStorage.uploadFileAndRetrieveLink(image2);
+      } catch (e) {
+        return false;
+      }
+    }
+    if (image3 != null) {
+      try {
+        listing.image3Path = await appStorage.uploadFileAndRetrieveLink(image3);
+      } catch (e) {
+        return false;
+      }
+    }
     try {
       await appDatabase.addNewSellListing(listing);
     } catch (e) {
       success = false;
     }
     return success;
+  }
+
+  homePageFetchSellListings() async {
+    var sellListings = await appDatabase.fetchSellListings();
+    sellListings.forEach((slt) {
+      if (!sellListingsIds.contains(slt.id)) {
+        sellListingsIds.add(slt.id);
+
+        userAdapter.user.sellListings.add(slt);
+        userAdapter.user.allListings.add(slt);
+      }
+    });
+
+    print("all listings");
+    print(userAdapter.user.allListings);
   }
 }
 

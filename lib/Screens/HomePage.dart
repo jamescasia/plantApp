@@ -5,8 +5,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/Screens/LogInPage.dart';
-import 'package:plantApp/Screens/elements/AddPostPage.dart';
+import 'package:plantApp/Screens/AddPostPage.dart';
 import 'package:plantApp/Screens/elements/ImageTile.dart';
+import 'package:plantApp/Screens/elements/ImageTileSelling.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
 
 import 'package:scoped_model/scoped_model.dart';
@@ -68,6 +69,33 @@ class _HomePageState extends State<HomePage> {
         }
       }
     });
+  }
+
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
+
+  generateShape(String id) {
+    var last = id.substring(id.length - 1);
+    var shapes = [0.83, 0.96, 1.21, 1.39, 1.66,1.81 ];
+    if (isNumeric(last)) {
+      return shapes[0];
+    } else {
+      if (last.codeUnitAt(0) >= 65 && last.codeUnitAt(0) <= 74) {
+        return shapes[1];
+      } else if (last.codeUnitAt(0) >= 75 && last.codeUnitAt(0) <= 84) {
+        return shapes[2];
+      } else if (last.codeUnitAt(0) >= 97 && last.codeUnitAt(0) <= 106) {
+        return shapes[3];
+      } else if (last.codeUnitAt(0) >= 107 && last.codeUnitAt(0) <= 116) {
+        return shapes[4];
+      } else {
+        return shapes[5];
+      }
+    }
   }
 
   @override
@@ -292,12 +320,23 @@ class _HomePageState extends State<HomePage> {
                           child: StaggeredGridView.countBuilder(
                             scrollDirection: Axis.vertical,
                             crossAxisCount: 2,
-                            itemCount: images.length,
+                            itemCount:
+                                appModel.userAdapter.user.allListings.length,
                             itemBuilder: (BuildContext context, int index) =>
-                                ImageTile(images[index], index),
-                            staggeredTileBuilder: (int index) =>
-                                new StaggeredTile.count(
-                                    1, (index % 2 == 0) ? 1.66 : 1.33),
+                                ImageTileSelling(
+                                    appModel
+                                        .userAdapter.user.allListings[index],
+                                    generateShape((appModel.userAdapter.user
+                                            .allListings[index])
+                                        .id),
+                                    index),
+                            staggeredTileBuilder: (int index) {
+                              return new StaggeredTile.count(
+                                  1,
+                                  generateShape((appModel
+                                          .userAdapter.user.allListings[index])
+                                      .id));
+                            },
                             mainAxisSpacing: Globals.dwidth * 20,
                             crossAxisSpacing: Globals.dwidth * 20,
                           ),

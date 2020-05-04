@@ -45,12 +45,12 @@ class ListingSelling {
         '"priceLabel"': priceLabel == PriceLabel.PerKilo
             ? '"PerKilo"'
             : priceLabel == PriceLabel.PerPiece ? '"PerPiece"' : '"PerBundle"',
-        '"isNegotiable"': '"$isNegotiable"',
-        '"isPickup"': '"$isPickup"',
-        '"isDelivery"': '"$isDelivery"',
-        '"isCOD"': '"$isCOD"',
+        '"isNegotiable"': isNegotiable,
+        '"isPickup"': isPickup,
+        '"isDelivery"': isDelivery,
+        '"isCOD"': isCOD,
         '"views"': '"${views.toString()}"',
-        '"poster"': '"${poster.toJson()}"'
+        '"poster"': poster.toJson()
       };
 
   ListingSelling.fromJson(Map<String, dynamic> json)
@@ -62,9 +62,9 @@ class ListingSelling {
         image3Path = json["image3Path"],
         desc = json["desc"],
         price = double.parse(json["price"]),
-        priceLabel = json["priceLabel"] == '"PerKilo"'
+        priceLabel = json["priceLabel"].contains("PerKilo")
             ? PriceLabel.PerKilo
-            : json["priceLabel"] == '"PerPiece"'
+            : json["priceLabel"].contains("PerPiece")
                 ? PriceLabel.PerPiece
                 : PriceLabel.PerBundle,
         isNegotiable = json["isNegotiable"],
@@ -120,10 +120,10 @@ class ListingBuying {
         '"priceLabel"': priceLabel == PriceLabel.PerKilo
             ? '"PerKilo"'
             : priceLabel == PriceLabel.PerPiece ? '"PerPiece"' : '"PerBundle"',
-        '"isNegotiable"': '"$isNegotiable"',
-        '"isPickup"': '"$isPickup"',
-        '"isDelivery"': '"$isDelivery"',
-        '"isCOD"': '"$isCOD"',
+        '"isNegotiable"': isNegotiable,
+        '"isPickup"': isPickup,
+        '"isDelivery"': isDelivery,
+        '"isCOD"': isCOD,
         '"views"': '"${views.toString()}"',
         '"poster"': '"${poster.toJson()}"'
       };
@@ -138,9 +138,9 @@ class ListingBuying {
         views = int.parse(json["views"]),
         desc = json["desc"],
         price = double.parse(json["price"]),
-        priceLabel = json["priceLabel"] == '"PerKilo"'
+        priceLabel = json["priceLabel"].contains("PerKilo")
             ? PriceLabel.PerKilo
-            : json["priceLabel"] == '"PerPiece"'
+            : json["priceLabel"].contains("PerPiece")
                 ? PriceLabel.PerPiece
                 : PriceLabel.PerBundle,
         isNegotiable = json["isNegotiable"],
@@ -194,6 +194,12 @@ class ListingSharing {
         desc = json["desc"],
         views = int.parse(json["views"]),
         poster = UserInfo.fromJson(json["poster"]);
+}
+
+priceLabelToString(PriceLabel priceLabel) {
+  return priceLabel == PriceLabel.PerKilo
+      ? "/kg"
+      : priceLabel == PriceLabel.PerPiece ? "/pc" : "/bd";
 }
 
 enum PriceLabel { PerKilo, PerPiece, PerBundle }
