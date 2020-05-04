@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/DataModels/Listing.dart';
 import 'package:plantApp/Screens/ViewImage.dart';
+import 'package:plantApp/Screens/ViewSellListing.dart';
 
 class ImageTileSelling extends StatefulWidget {
   ListingSelling listing;
@@ -47,7 +48,8 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (BuildContext context) => ViewImage()));
+                        builder: (BuildContext context) =>
+                            ViewSellListing(listing)));
               },
               child: Container(
                 width: 459,
