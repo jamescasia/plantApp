@@ -352,18 +352,16 @@ class AppModel extends Model {
   }
 
   homePageFetchSellListings() async {
-    var sellListings = await appDatabase.fetchSellListings();
+    List<ListingSelling> sellListings = await appDatabase.fetchSellListings();
     sellListings.forEach((slt) {
       if (!sellListingsIds.contains(slt.id)) {
         sellListingsIds.add(slt.id);
 
-
         userAdapter.user.sellListings.add(slt);
         userAdapter.user.allListings.add(slt);
-        // userAdapter.user.sellListings
-        //     .insert(Random().nextInt(sellListings.length), slt);
-        // userAdapter.user.allListings
-        //     .insert(Random().nextInt(sellListings.length), slt);
+        if (slt.poster.email == userAdapter.user.userInfo.email) {
+          userAdapter.user.ownListings.add(slt);
+        }
       }
     });
 
@@ -372,25 +370,31 @@ class AppModel extends Model {
   }
 
   homePageFetchBuyListings() async {
-    var buyListings = await appDatabase.fetchBuyListings();
+    List<ListingBuying> buyListings = await appDatabase.fetchBuyListings();
     buyListings.forEach((slt) {
       if (!buyListingsIds.contains(slt.id)) {
         buyListingsIds.add(slt.id);
 
         userAdapter.user.buyListings.add(slt);
         userAdapter.user.allListings.add(slt);
+        if (slt.poster.email == userAdapter.user.userInfo.email) {
+          userAdapter.user.ownListings.add(slt);
+        }
       }
     });
   }
 
   homePageFetchShareListings() async {
-    var shareListings = await appDatabase.fetchShareListings();
+    List<ListingSharing> shareListings = await appDatabase.fetchShareListings();
     shareListings.forEach((slt) {
       if (!shareListingsIds.contains(slt.id)) {
         shareListingsIds.add(slt.id);
 
         userAdapter.user.shareListings.add(slt);
         userAdapter.user.allListings.add(slt);
+        if (slt.poster.email == userAdapter.user.userInfo.email) {
+          userAdapter.user.ownListings.add(slt);
+        }
       }
     });
 

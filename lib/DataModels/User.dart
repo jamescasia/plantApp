@@ -8,14 +8,14 @@ class User {
   List<ListingSelling> sellListings = [];
   List<ListingSharing> shareListings = [];
   List<dynamic> allListings = [];
+  List<dynamic> ownListings = [];
 
   User() {
+    ownListings = [];
     buyListings = [];
     sellListings = [];
     shareListings = [];
     allListings = [];
     userInfo = UserInfo();
   }
-
-  
 }
