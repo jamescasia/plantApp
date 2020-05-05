@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:plantApp/DataModels/Listing.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:plantApp/UtilityModels/UserAdapter.dart';
@@ -6,6 +8,7 @@ import 'package:plantApp/DataModels/AppAuth.dart';
 import 'package:plantApp/DataModels/AppDatabase.dart';
 import 'package:plantApp/DataModels/AppStorage.dart';
 import 'dart:io';
+import 'dart:convert';
 
 class AppModel extends Model {
   UserAdapter userAdapter;
@@ -17,6 +20,9 @@ class AppModel extends Model {
   List<String> sellListingsIds = [];
   List<String> shareListingsIds = [];
   List<String> buyListingsIds = [];
+  StreamSubscription listenForNewSellListings;
+  StreamSubscription listenForNewShareListings;
+  StreamSubscription listenForNewBuyListings;
   AppModel() {
     initialize();
   }
@@ -31,9 +37,32 @@ class AppModel extends Model {
     buyListingsIds = [];
   }
 
-  cancelListeners() {}
+  cancelListeners() {
+    try {
+      listenForNewSellListings.cancel();
+    } catch (e) {}
+  }
 
-  initializeListeners() {}
+  initializeListeners() {
+    cancelListeners();
+    listenForNewSellListings =
+        appDatabase.sellListingsRef.onChildAdded.listen((event) {
+      if (!sellListingsIds.contains(event.snapshot.key)) {
+        ListingSelling ls = ListingSelling.fromJson(
+            jsonDecode(event.snapshot.value.toString()));
+
+        userAdapter.user.sellListings.add(ls);
+        userAdapter.user.allListings.add(ls);
+      }
+      // Fluttertoast.showToast(
+      //     msg: "${event.snapshot.value}",
+      //     toastLength: Toast.LENGTH_LONG,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 1,
+      //     fontSize: 16.0);
+      notifyListeners();
+    });
+  }
 
   logInScreenLogIn(email, pass) async {}
   logInScreenLogOut() async {
