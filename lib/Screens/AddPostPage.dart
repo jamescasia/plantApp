@@ -46,6 +46,9 @@ class _AddPostPageState extends State<AddPostPage> {
             height: Globals.height,
             child: Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(
+                    color: Colors.white, //change your color here
+                  ),
                   backgroundColor: Globals.commonGreen,
                   title: Text(
                     "Add Post",

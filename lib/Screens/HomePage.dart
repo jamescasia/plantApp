@@ -4,10 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
+import 'package:plantApp/DataModels/Listing.dart';
 import 'package:plantApp/Screens/LogInPage.dart';
 import 'package:plantApp/Screens/AddPostPage.dart';
 import 'package:plantApp/Screens/elements/ImageTile.dart';
+import 'package:plantApp/Screens/elements/ImageTileBuying.dart';
 import 'package:plantApp/Screens/elements/ImageTileSelling.dart';
+import 'package:plantApp/Screens/elements/ImageTileSharing.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
 
 import 'package:scoped_model/scoped_model.dart';
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePage> {
 
   generateShape(String id) {
     var last = id.substring(id.length - 1);
-    var shapes = [0.83, 0.96, 1.21, 1.39, 1.66,1.81 ];
+    var shapes = [0.83, 0.96, 1.21, 1.39, 1.66, 1.81];
     if (isNumeric(last)) {
       return shapes[0];
     } else {
@@ -305,47 +308,74 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ];
                       },
-                      body: ClipRRect(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(40),
+                      body: Material(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
                         ),
+                        elevation: 1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40),
+                          ),
 
-                        child: Container(
-                          width: Globals.width,
-                          color: Colors.white,
-                          padding: EdgeInsets.only(
-                              left: Globals.dwidth * 20,
-                              right: Globals.dwidth * 20,
-                              top: Globals.dwidth * 0),
-                          child: StaggeredGridView.countBuilder(
-                            scrollDirection: Axis.vertical,
-                            crossAxisCount: 2,
-                            itemCount:
-                                appModel.userAdapter.user.allListings.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                ImageTileSelling(
-                                    appModel
-                                        .userAdapter.user.allListings[index],
+                          child: Container(
+                            width: Globals.width,
+                            color: Colors.white,
+                            padding: EdgeInsets.only(
+                                left: Globals.dwidth * 20,
+                                right: Globals.dwidth * 20,
+                                top: Globals.dwidth * 0),
+                            child: StaggeredGridView.countBuilder(
+                              scrollDirection: Axis.vertical,
+                              crossAxisCount: 2,
+                              itemCount:
+                                  appModel.userAdapter.user.allListings.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (appModel.userAdapter.user.allListings[index]
+                                    is ListingSelling) {
+                                  return ImageTileSelling(
+                                      appModel
+                                          .userAdapter.user.allListings[index],
+                                      generateShape((appModel.userAdapter.user
+                                              .allListings[index])
+                                          .id),
+                                      index);
+                                } else if (appModel.userAdapter.user
+                                    .allListings[index] is ListingBuying) {
+                                  return ImageTileBuying(
+                                      appModel
+                                          .userAdapter.user.allListings[index],
+                                      generateShape((appModel.userAdapter.user
+                                              .allListings[index])
+                                          .id),
+                                      index);
+                                } else
+                                  return ImageTileSharing(
+                                      appModel
+                                          .userAdapter.user.allListings[index],
+                                      generateShape((appModel.userAdapter.user
+                                              .allListings[index])
+                                          .id),
+                                      index);
+                              },
+                              staggeredTileBuilder: (int index) {
+                                return new StaggeredTile.count(
+                                    1,
                                     generateShape((appModel.userAdapter.user
                                             .allListings[index])
-                                        .id),
-                                    index),
-                            staggeredTileBuilder: (int index) {
-                              return new StaggeredTile.count(
-                                  1,
-                                  generateShape((appModel
-                                          .userAdapter.user.allListings[index])
-                                      .id));
-                            },
-                            mainAxisSpacing: Globals.dwidth * 20,
-                            crossAxisSpacing: Globals.dwidth * 20,
+                                        .id));
+                              },
+                              mainAxisSpacing: Globals.dwidth * 20,
+                              crossAxisSpacing: Globals.dwidth * 20,
+                            ),
                           ),
+
+                          // Example01()
+
+                          // StaggeredGridView.builder(
+                          //     gridDelegate: null, itemBuilder: null)
                         ),
-
-                        // Example01()
-
-                        // StaggeredGridView.builder(
-                        //     gridDelegate: null, itemBuilder: null)
                       )),
                 ),
               );

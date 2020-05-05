@@ -448,7 +448,7 @@ class _BuyingFormState extends State<BuyingForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Do you offer pickup?",
+                    "Are you looking for pickup?",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         fontFamily: "Lato",
@@ -485,7 +485,7 @@ class _BuyingFormState extends State<BuyingForm> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Do you offer delivery?",
+                          "Are you looking for delivery?",
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontFamily: "Lato",
@@ -525,7 +525,7 @@ class _BuyingFormState extends State<BuyingForm> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Do you offer COD (Cash on Delivery)?",
+                        Text("Are you looking for COD (Cash on Delivery)?",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 fontFamily: "Lato",
@@ -564,7 +564,7 @@ class _BuyingFormState extends State<BuyingForm> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Is this negotiable?",
+                        Text("Will this be negotiable?",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 fontFamily: "Lato",
@@ -647,7 +647,7 @@ class _BuyingFormState extends State<BuyingForm> {
                     if (isFormValid()) {
                       bool success = false;
                       // image
-                      ListingSelling listing = ListingSelling(
+                      ListingBuying listing = ListingBuying(
                         title: titleController.text,
                         datePosted: DateTime.now().toIso8601String(),
                         desc: descController.text,
@@ -663,7 +663,7 @@ class _BuyingFormState extends State<BuyingForm> {
                         postingState = PostState.Uploading;
                       });
 
-                      success = await appModel.addPostPageAddNewSellListing(
+                      success = await appModel.addPostPageAddNewBuyListing(
                           listing, image1, image2, image3);
 
                       setState(() {

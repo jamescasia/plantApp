@@ -41,6 +41,14 @@ class AppModel extends Model {
     try {
       listenForNewSellListings.cancel();
     } catch (e) {}
+
+    try {
+      listenForNewBuyListings.cancel();
+    } catch (e) {}
+
+    try {
+      listenForNewShareListings.cancel();
+    } catch (e) {}
   }
 
   initializeListeners() {
@@ -54,12 +62,30 @@ class AppModel extends Model {
         userAdapter.user.sellListings.add(ls);
         userAdapter.user.allListings.add(ls);
       }
-      // Fluttertoast.showToast(
-      //     msg: "${event.snapshot.value}",
-      //     toastLength: Toast.LENGTH_LONG,
-      //     gravity: ToastGravity.BOTTOM,
-      //     timeInSecForIosWeb: 1,
-      //     fontSize: 16.0);
+      notifyListeners();
+    });
+
+    listenForNewBuyListings =
+        appDatabase.buyListingsRef.onChildAdded.listen((event) {
+      if (!sellListingsIds.contains(event.snapshot.key)) {
+        ListingBuying ls =
+            ListingBuying.fromJson(jsonDecode(event.snapshot.value.toString()));
+
+        userAdapter.user.buyListings.add(ls);
+        userAdapter.user.allListings.add(ls);
+      }
+      notifyListeners();
+    });
+
+    listenForNewShareListings =
+        appDatabase.shareListingsRef.onChildAdded.listen((event) {
+      if (!shareListingsIds.contains(event.snapshot.key)) {
+        ListingSharing ls = ListingSharing.fromJson(
+            jsonDecode(event.snapshot.value.toString()));
+
+        userAdapter.user.shareListings.add(ls);
+        userAdapter.user.allListings.add(ls);
+      }
       notifyListeners();
     });
   }
@@ -258,6 +284,70 @@ class AppModel extends Model {
     return success;
   }
 
+  addPostPageAddNewBuyListing(
+      ListingBuying listing, File image1, File image2, File image3) async {
+    bool success = true;
+    if (image1 != null) {
+      try {
+        listing.image1Path = await appStorage.uploadFileAndRetrieveLink(image1);
+      } catch (e) {
+        return false;
+      }
+    }
+    if (image2 != null) {
+      try {
+        listing.image2Path = await appStorage.uploadFileAndRetrieveLink(image2);
+      } catch (e) {
+        return false;
+      }
+    }
+    if (image3 != null) {
+      try {
+        listing.image3Path = await appStorage.uploadFileAndRetrieveLink(image3);
+      } catch (e) {
+        return false;
+      }
+    }
+    try {
+      await appDatabase.addNewBuyListing(listing);
+    } catch (e) {
+      success = false;
+    }
+    return success;
+  }
+
+  addPostPageAddNewShareListing(
+      ListingSharing listing, File image1, File image2, File image3) async {
+    bool success = true;
+    if (image1 != null) {
+      try {
+        listing.image1Path = await appStorage.uploadFileAndRetrieveLink(image1);
+      } catch (e) {
+        return false;
+      }
+    }
+    if (image2 != null) {
+      try {
+        listing.image2Path = await appStorage.uploadFileAndRetrieveLink(image2);
+      } catch (e) {
+        return false;
+      }
+    }
+    if (image3 != null) {
+      try {
+        listing.image3Path = await appStorage.uploadFileAndRetrieveLink(image3);
+      } catch (e) {
+        return false;
+      }
+    }
+    try {
+      await appDatabase.addNewShareListing(listing);
+    } catch (e) {
+      success = false;
+    }
+    return success;
+  }
+
   homePageFetchSellListings() async {
     var sellListings = await appDatabase.fetchSellListings();
     sellListings.forEach((slt) {
@@ -269,8 +359,33 @@ class AppModel extends Model {
       }
     });
 
+    userAdapter.user.allListings.shuffle();
     print("all listings");
     print(userAdapter.user.allListings);
+  }
+
+  homePageFetchBuyListings() async {
+    var buyListings = await appDatabase.fetchBuyListings();
+    buyListings.forEach((slt) {
+      if (!buyListingsIds.contains(slt.id)) {
+        buyListingsIds.add(slt.id);
+
+        userAdapter.user.buyListings.add(slt);
+        userAdapter.user.allListings.add(slt);
+      }
+    });
+  }
+
+  homePageFetchShareListings() async {
+    var shareListings = await appDatabase.fetchShareListings();
+    shareListings.forEach((slt) {
+      if (!shareListingsIds.contains(slt.id)) {
+        shareListingsIds.add(slt.id);
+
+        userAdapter.user.shareListings.add(slt);
+        userAdapter.user.allListings.add(slt);
+      }
+    });
   }
 }
 

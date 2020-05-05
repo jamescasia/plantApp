@@ -135,10 +135,46 @@ class AppDatabase {
         });
       });
     } catch (E) {
-      print("error fetching collab tasks ${E.toString()}");
+      print("error fetching sell ${E.toString()}");
     }
 
     return listOfSellListings;
+  }
+
+  fetchBuyListings() async {
+    List<String> listOfBuyListingsIds = [];
+
+    List<ListingBuying> listOfBuyListings = [];
+
+    try {
+      await buyListingsRef.once().then((data) async {
+        data.value.forEach((k, value) {
+          ListingBuying ls =
+              ListingBuying.fromJson(jsonDecode(value.toString()));
+          listOfBuyListings.add(ls);
+        });
+      });
+    } catch (E) {}
+
+    return listOfBuyListings;
+  }
+
+  fetchShareListings() async {
+    List<String> listOfShareListingsIds = [];
+
+    List<ListingSharing> listOfShareListings = [];
+
+    try {
+      await shareListingsRef.once().then((data) async {
+        data.value.forEach((k, value) {
+          ListingSharing ls =
+              ListingSharing.fromJson(jsonDecode(value.toString()));
+          listOfShareListings.add(ls);
+        });
+      });
+    } catch (E) {}
+
+    return listOfShareListings;
   }
 
   // addNewSoloTask(SoloTask soloTask) {

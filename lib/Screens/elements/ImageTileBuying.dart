@@ -2,25 +2,26 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/DataModels/Listing.dart';
+import 'package:plantApp/Screens/ViewBuyListing.dart';
 import 'package:plantApp/Screens/ViewImage.dart';
 import 'package:plantApp/Screens/ViewSellListing.dart';
 
-class ImageTileSelling extends StatefulWidget {
-  ListingSelling listing;
+class ImageTileBuying extends StatefulWidget {
+  ListingBuying listing;
   int index;
   double heightRatio;
-  ImageTileSelling(this.listing, this.heightRatio, this.index);
+  ImageTileBuying(this.listing, this.heightRatio, this.index);
 
   @override
-  _ImageTileSellingState createState() =>
-      _ImageTileSellingState(this.listing, this.heightRatio, this.index);
+  _ImageTileBuyingState createState() =>
+      _ImageTileBuyingState(this.listing, this.heightRatio, this.index);
 }
 
-class _ImageTileSellingState extends State<ImageTileSelling> {
-  ListingSelling listing;
+class _ImageTileBuyingState extends State<ImageTileBuying> {
+  ListingBuying listing;
   int index;
   double heightRatio;
-  _ImageTileSellingState(this.listing, this.heightRatio, this.index);
+  _ImageTileBuyingState(this.listing, this.heightRatio, this.index);
 
   displayImage() {
     return !listing.image1Path.contains("null")
@@ -35,9 +36,9 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
     return Padding(
       padding: EdgeInsets.only(top: (index == 0 || index == 1) ? 20 : 0),
       child: Material(
+        color: Colors.white,
         elevation: 1,
         borderRadius: BorderRadius.all(Radius.circular(24)),
-        color:Colors.white,
         child: ClipRRect(
           borderRadius: BorderRadius.all(
             Radius.circular(24),
@@ -53,7 +54,7 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
                     context,
                     new MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ViewSellListing(listing)));
+                            ViewBuyListing(listing)));
               },
               child: Container(
                 width: 459,
@@ -67,11 +68,10 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
                         imageUrl: displayImage(),
                         fit: BoxFit.cover,
                         progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                Center(
-                                  child: CircularProgressIndicator(
-                                      value: downloadProgress.progress),
-                                ),
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                        ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
@@ -83,7 +83,7 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 4),
                             decoration: BoxDecoration(
-                                color: Globals.profileYellow,
+                                color: Globals.contactSellerPurple,
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(24),
                                   topRight: Radius.circular(12),

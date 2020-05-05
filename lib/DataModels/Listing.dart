@@ -125,7 +125,7 @@ class ListingBuying {
         '"isDelivery"': isDelivery,
         '"isCOD"': isCOD,
         '"views"': '"${views.toString()}"',
-        '"poster"': '"${poster.toJson()}"'
+        '"poster"': poster.toJson()
       };
 
   ListingBuying.fromJson(Map<String, dynamic> json)
@@ -181,7 +181,7 @@ class ListingSharing {
         '"image3Path"': '"$image3Path"',
         '"desc"': '"$desc"',
         '"views"': '"${views.toString()}"',
-        '"poster"': '"${poster.toJson()}"'
+        '"poster"': poster.toJson()
       };
 
   ListingSharing.fromJson(Map<String, dynamic> json)

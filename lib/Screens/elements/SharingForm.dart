@@ -23,24 +23,12 @@ class _SharingFormState extends State<SharingForm> {
   File image1;
   File image2;
   File image3;
-  PriceLabel selectedPriceLabel = PriceLabel.PerKilo;
 
-  bool isNegotiable = true;
-  bool isDelivery = true;
-  bool isPickup = true;
-  bool isCOD = true;
   bool agreed = false;
   PostState postingState = PostState.Idle;
 
   bool isFormValid() {
-    bool validPrice = true;
-    try {
-      double.parse(priceController.text);
-    } catch (e) {
-      validPrice = false;
-    }
     return (image1 != null || image2 != null || image3 != null) &&
-        validPrice &&
         titleController.text.isNotEmpty &&
         descController.text.isNotEmpty &&
         agreed;
@@ -319,95 +307,6 @@ class _SharingFormState extends State<SharingForm> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Price",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontFamily: "Lato",
-                          fontSize: Globals.dwidth * 16,
-                          fontWeight: FontWeight.w600,
-                          color: Globals.mildBlack),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: Globals.dheight * 7),
-                          height: Globals.dheight * 50,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(color: Colors.grey[300])),
-                          padding:
-                              EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                          width: Globals.width * 0.4,
-                          child: Center(
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(fontFamily: "Lato"),
-                              controller: priceController,
-                              decoration: new InputDecoration.collapsed(
-                                  hintText: '1000',
-                                  hintStyle: TextStyle(
-                                      fontFamily: "Lato",
-                                      color: Colors.grey[400])),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: Globals.dwidth * 20,
-                        ),
-                        Text(
-                          selectedPriceLabel == PriceLabel.PerKilo
-                              ? "Per Kilo"
-                              : selectedPriceLabel == PriceLabel.PerPiece
-                                  ? "Per Piece"
-                                  : "Per Bundle",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontFamily: "Lato",
-                              fontSize: Globals.dwidth * 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[400]),
-                        ),
-                      ],
-                    ),
-                  ]),
-            ),
-            SizedBox(height: Globals.dheight * 10),
-            CustomRadioButton(
-              enableShape: true,
-              horizontal: false,
-              elevation: 0,
-              width: Globals.dwidth * 80,
-              buttonColor: Colors.grey[100],
-              customShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(300))),
-              buttonLables: [
-                'Per Kilo',
-                'Per Piece',
-                'Per Bundle',
-              ],
-              buttonValues: [
-                PriceLabel.PerKilo,
-                PriceLabel.PerPiece,
-                PriceLabel.PerBundle
-              ],
-              radioButtonValue: (value) {
-                setState(() {
-                  selectedPriceLabel = value;
-                });
-              },
-              selectedColor: Globals.commonGreen,
-            ),
-            SizedBox(height: Globals.dheight * 10),
-            Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
                       "Description",
                       textAlign: TextAlign.start,
                       style: TextStyle(
@@ -419,7 +318,7 @@ class _SharingFormState extends State<SharingForm> {
                     Container(
                       margin:
                           EdgeInsets.symmetric(vertical: Globals.dheight * 7),
-                      height: Globals.dheight * 50 * 2.3,
+                      height: Globals.dheight * 50 * 2.7,
                       decoration: BoxDecoration(
                           color: Colors.grey[100],
                           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -428,8 +327,8 @@ class _SharingFormState extends State<SharingForm> {
                       width: Globals.width * 0.84,
                       child: Center(
                         child: TextField(
-                          maxLines: 4,
-                          maxLength: 160,
+                          maxLines: 5,
+                          maxLength: 256,
                           style: TextStyle(fontFamily: "Lato"),
                           controller: descController,
                           decoration: new InputDecoration.collapsed(
@@ -442,165 +341,6 @@ class _SharingFormState extends State<SharingForm> {
                   ]),
             ),
             SizedBox(height: Globals.dheight * 10),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Do you offer pickup?",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontFamily: "Lato",
-                        fontSize: Globals.dwidth * 16,
-                        fontWeight: FontWeight.w600,
-                        color: Globals.mildBlack),
-                  ),
-                  SizedBox(height: Globals.dheight * 10),
-                  Container(
-                    width: Globals.width * 0.7,
-                    child: CustomRadioButton(
-                      enableShape: true,
-                      horizontal: false,
-                      elevation: 0,
-                      width: Globals.dwidth * 80,
-                      buttonColor: Colors.grey[100],
-                      customShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(300))),
-                      buttonLables: ['Yes', 'No'],
-                      buttonValues: [true, false],
-                      radioButtonValue: (value) {
-                        setState(() {
-                          isPickup = value;
-                        });
-                      },
-                      selectedColor:
-                          (isPickup) ? Globals.commonGreen : Colors.red,
-                    ),
-                  ),
-                  SizedBox(height: Globals.dheight * 10),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Do you offer delivery?",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontFamily: "Lato",
-                              fontSize: Globals.dwidth * 16,
-                              fontWeight: FontWeight.w600,
-                              color: Globals.mildBlack),
-                        ),
-                        SizedBox(height: Globals.dheight * 10),
-                        Container(
-                          width: Globals.width * 0.7,
-                          child: CustomRadioButton(
-                            enableShape: true,
-                            horizontal: false,
-                            elevation: 0,
-                            width: Globals.dwidth * 80,
-                            buttonColor: Colors.grey[100],
-                            customShape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(300))),
-                            buttonLables: ['Yes', 'No'],
-                            buttonValues: [true, false],
-                            radioButtonValue: (value) {
-                              setState(() {
-                                isDelivery = value;
-                              });
-                            },
-                            selectedColor:
-                                (isDelivery) ? Globals.commonGreen : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: Globals.dheight * 10),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Do you offer COD (Cash on Delivery)?",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontFamily: "Lato",
-                                fontSize: Globals.dwidth * 16,
-                                fontWeight: FontWeight.w600,
-                                color: Globals.mildBlack)),
-                        SizedBox(height: Globals.dheight * 10),
-                        Container(
-                          width: Globals.width * 0.7,
-                          child: CustomRadioButton(
-                            enableShape: true,
-                            horizontal: false,
-                            elevation: 0,
-                            width: Globals.dwidth * 80,
-                            buttonColor: Colors.grey[100],
-                            customShape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(300))),
-                            buttonLables: ['Yes', 'No'],
-                            buttonValues: [true, false],
-                            radioButtonValue: (value) {
-                              setState(() {
-                                isCOD = value;
-                              });
-                            },
-                            selectedColor:
-                                (isCOD) ? Globals.commonGreen : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: Globals.dheight * 10),
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Is this negotiable?",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontFamily: "Lato",
-                                fontSize: Globals.dwidth * 16,
-                                fontWeight: FontWeight.w600,
-                                color: Globals.mildBlack)),
-                        SizedBox(height: Globals.dheight * 10),
-                        Container(
-                          width: Globals.width * 0.7,
-                          child: CustomRadioButton(
-                            enableShape: true,
-                            horizontal: false,
-                            elevation: 0,
-                            width: Globals.dwidth * 80,
-                            buttonColor: Colors.grey[100],
-                            customShape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(300))),
-                            buttonLables: ['Yes', 'No'],
-                            buttonValues: [true, false],
-                            radioButtonValue: (value) {
-                              setState(() {
-                                isNegotiable = value;
-                              });
-                            },
-                            selectedColor: (isNegotiable)
-                                ? Globals.commonGreen
-                                : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: Globals.dheight * 20),
             Row(
               children: <Widget>[
@@ -647,24 +387,18 @@ class _SharingFormState extends State<SharingForm> {
                     if (isFormValid()) {
                       bool success = false;
                       // image
-                      ListingBuying listing = ListingBuying(
+                      ListingSharing listing = ListingSharing(
                         title: titleController.text,
                         datePosted: DateTime.now().toIso8601String(),
                         desc: descController.text,
-                        isCOD: isCOD,
-                        isDelivery: isDelivery,
-                        isPickup: isPickup,
-                        isNegotiable: isNegotiable,
-                        price: double.parse(priceController.text),
-                        priceLabel: selectedPriceLabel,
                         poster: appModel.userAdapter.user.userInfo,
                       );
                       setState(() {
                         postingState = PostState.Uploading;
                       });
 
-                      // success = await appModel.addPostPageAddNewSellListing(
-                      //     listing, image1, image2, image3);
+                      success = await appModel.addPostPageAddNewShareListing(
+                          listing, image1, image2, image3);
 
                       setState(() {
                         postingState = PostState.Idle;

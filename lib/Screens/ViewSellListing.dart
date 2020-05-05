@@ -81,12 +81,12 @@ class _ViewSellListingState extends State<ViewSellListing>
                                     (pLink) => CachedNetworkImage(
                                       imageUrl: pLink,
                                       fit: BoxFit.cover,
-                                      progressIndicatorBuilder: (context, url,
-                                              downloadProgress) =>
-                                          Center(
-                                            child: CircularProgressIndicator(
-                                                value: downloadProgress.progress),
-                                          ),
+                                      progressIndicatorBuilder:
+                                          (context, url, downloadProgress) =>
+                                              Center(
+                                        child: CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                      ),
                                       errorWidget: (context, url, error) =>
                                           Icon(Icons.error),
                                     ),
@@ -330,6 +330,12 @@ class _ViewSellListingState extends State<ViewSellListing>
                                                         Globals.dheight * 26,
                                                     child: Row(
                                                       children: <Widget>[
+                                                        FlairChip("SELLING"),
+                                                        SizedBox(
+                                                          width:
+                                                              Globals.dwidth *
+                                                                  6,
+                                                        ),
                                                         listing.isCOD
                                                             ? FlairChip("COD")
                                                             : SizedBox(),
@@ -401,27 +407,27 @@ class _ViewSellListingState extends State<ViewSellListing>
                                                                 height: Globals
                                                                         .dheight *
                                                                     50,
-                                                                child:
-                                                                    Center(
-                                                                      child: CachedNetworkImage(
-                                                                  imageUrl: listing
+                                                                child: Center(
+                                                                  child:
+                                                                      CachedNetworkImage(
+                                                                    imageUrl: listing
                                                                         .poster
                                                                         .ppLink,
-                                                                  fit: BoxFit
+                                                                    fit: BoxFit
                                                                         .cover,
-                                                                  progressIndicatorBuilder: (context,
+                                                                    progressIndicatorBuilder: (context,
                                                                             url,
                                                                             downloadProgress) =>
                                                                         CircularProgressIndicator(
                                                                             value:
                                                                                 downloadProgress.progress),
-                                                                  errorWidget: (context,
+                                                                    errorWidget: (context,
                                                                             url,
                                                                             error) =>
                                                                         Icon(Icons
                                                                             .error),
+                                                                  ),
                                                                 ),
-                                                                    ),
                                                               )),
                                                           SizedBox(
                                                               height: Globals
@@ -701,7 +707,11 @@ class FlairChip extends StatelessWidget {
         ],
         color: text == 'COD'
             ? Colors.blue[900]
-            : text == "Pickup" ? Colors.lightBlue : Colors.lightBlueAccent,
+            : text == "Pickup"
+                ? Colors.lightBlue
+                : text == "SELLING"
+                    ? Globals.profileYellow
+                    : Colors.lightBlueAccent,
       ),
       child: Text(
         "$text",
