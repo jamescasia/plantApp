@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/DataModels/Listing.dart';
+import 'package:plantApp/DataModels/UserInfo.dart';
 import 'package:plantApp/ScopedModels/app_model.dart';
-import 'package:plantApp/Screens/AddPostPage.dart';
 import 'package:plantApp/Screens/LogInPage.dart';
 import 'package:plantApp/Screens/elements/ImageTile.dart';
 import 'package:plantApp/Screens/elements/ImageTileBuying.dart';
@@ -17,12 +16,20 @@ import 'package:plantApp/Screens/elements/MapFragment.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class ProfilePage extends StatefulWidget {
+class OtherProfilePage extends StatefulWidget {
+  UserInfo user;
+  List listings;
+  OtherProfilePage(this.user, this.listings);
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _OtherProfilePageState createState() =>
+      _OtherProfilePageState(this.user, this.listings);
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _OtherProfilePageState extends State<OtherProfilePage> {
+  UserInfo user;
+  List listings;
+  _OtherProfilePageState(this.user, this.listings);
+
   var images = [
     "assets/images/ampalaya.png",
     "assets/images/hydro.png",
@@ -49,8 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController searchController = TextEditingController();
   FocusNode searchFnode = FocusNode();
 
-  ScrollController _hideButtonController = ScrollController();
-  bool _isFabVisible = true;
   bool isNumeric(String s) {
     if (s == null) {
       return false;
@@ -79,29 +84,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
-  void initState() {
-    _hideButtonController.addListener(() {
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        if (_isFabVisible == true) {
-          setState(() {
-            _isFabVisible = false;
-          });
-        }
-      } else {
-        if (_hideButtonController.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          if (_isFabVisible == false) {
-            setState(() {
-              _isFabVisible = true;
-            });
-          }
-        }
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Globals.grayHomeBg,
@@ -118,28 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
             Globals.width = constraints.maxWidth;
             return Scaffold(
               appBar: EmptyAppBar(),
-              floatingActionButton: Visibility(
-                  visible: _isFabVisible,
-                  child: MaterialButton(
-                      elevation: 5,
-                      minWidth: Globals.dwidth * 65,
-                      height: Globals.dwidth * 65,
-                      color: Colors.greenAccent,
-                      child: FaIcon(
-                        FontAwesomeIcons.plus,
-                        color: Colors.white,
-                        size: Globals.dheight * 30,
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(3000))),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    AddPostPage()));
-                      })),
               body: Container(
                 width: Globals.width,
                 height: Globals.height,
@@ -179,8 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               width: Globals.dwidth * 80,
                                               height: Globals.dwidth * 80,
                                               child: CachedNetworkImage(
-                                                imageUrl: appModel.userAdapter
-                                                    .user.userInfo.ppLink,
+                                                imageUrl: user.ppLink,
                                                 progressIndicatorBuilder:
                                                     (context, url,
                                                             downloadProgress) =>
@@ -200,8 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           SizedBox(
                                               height: Globals.dheight * 10),
                                           Text(
-                                            appModel
-                                                .userAdapter.user.userInfo.name,
+                                            user.name,
                                             // variable
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
@@ -215,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           Container(
                                             width: Globals.width * 0.5,
                                             child: Text(
-                                              "${appModel.userAdapter.user.userInfo.bio}",
+                                              "${user.bio}",
                                               // variable
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
@@ -240,15 +198,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       child: Opacity(
                                                           opacity: a1.value,
                                                           child: MapFragment(
-                                                              double.parse(appModel
-                                                                  .userAdapter
-                                                                  .user
-                                                                  .userInfo
+                                                              double.parse(user
                                                                   .addressLatitude),
-                                                              double.parse(appModel
-                                                                  .userAdapter
-                                                                  .user
-                                                                  .userInfo
+                                                              double.parse(user
                                                                   .addressLongitude))),
                                                     );
                                                   },
@@ -262,7 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       animation2) {});
                                             },
                                             child: Text(
-                                              "${appModel.userAdapter.user.userInfo.address}",
+                                              "${user.address}",
                                               // variable
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
@@ -280,64 +232,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                NumberTick(appModel
-                                                    .userAdapter
-                                                    .user
-                                                    .userInfo
-                                                    .mainPhoneNumber),
-                                                (appModel
-                                                            .userAdapter
-                                                            .user
-                                                            .userInfo
-                                                            .altPhoneNumber !=
-                                                        "")
+                                                NumberTick(
+                                                    user.mainPhoneNumber),
+                                                (user.altPhoneNumber != "")
                                                     ? SizedBox(
                                                         width:
                                                             Globals.dwidth * 10)
                                                     : SizedBox(),
-                                                (appModel
-                                                            .userAdapter
-                                                            .user
-                                                            .userInfo
-                                                            .altPhoneNumber !=
-                                                        "")
-                                                    ? NumberTick(appModel
-                                                        .userAdapter
-                                                        .user
-                                                        .userInfo
-                                                        .altPhoneNumber)
+                                                (user.altPhoneNumber != "")
+                                                    ? NumberTick(
+                                                        user.altPhoneNumber)
                                                     : SizedBox()
                                               ])
                                         ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: Globals.dheight * 100,
-                                      right: Globals.dwidth * 10,
-                                      child: InkWell(
-                                        highlightColor: Colors.yellow,
-                                        splashColor: Colors.yellow,
-                                        onTap: () async {
-                                          await appModel.logInScreenLogOut();
-
-                                          Navigator.pushReplacement(
-                                              context,
-                                              new MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          LogInPage()));
-                                        },
-                                        child: Container(
-                                          width: Globals.dwidth * 30,
-                                          height: Globals.dwidth * 30,
-                                          child: Center(
-                                            child: FaIcon(
-                                              FontAwesomeIcons.signOutAlt,
-                                              color: Colors.grey[400],
-                                              size: Globals.dwidth * 17,
-                                            ),
-                                          ),
-                                        ),
                                       ),
                                     ),
                                   ],
@@ -367,42 +274,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: StaggeredGridView.countBuilder(
                             scrollDirection: Axis.vertical,
                             crossAxisCount: 2,
-                            itemCount:
-                                appModel.userAdapter.user.ownListings.length,
+                            itemCount: listings.length,
                             itemBuilder: (BuildContext context, int index) {
-                              if (appModel.userAdapter.user.ownListings[index]
-                                  is ListingSelling) {
-                                return ImageTileSelling(
-                                    appModel
-                                        .userAdapter.user.ownListings[index],
-                                    generateShape((appModel.userAdapter.user
-                                            .ownListings[index])
-                                        .id),
-                                    index);
-                              } else if (appModel.userAdapter.user
-                                  .ownListings[index] is ListingBuying) {
-                                return ImageTileBuying(
-                                    appModel
-                                        .userAdapter.user.ownListings[index],
-                                    generateShape((appModel.userAdapter.user
-                                            .ownListings[index])
-                                        .id),
-                                    index);
+                              if (listings[index] is ListingSelling) {
+                                return ImageTileSelling(listings[index],
+                                    generateShape((listings[index]).id), index);
+                              } else if (listings[index] is ListingBuying) {
+                                return ImageTileBuying(listings[index],
+                                    generateShape((listings[index]).id), index);
                               } else
-                                return ImageTileSharing(
-                                    appModel
-                                        .userAdapter.user.ownListings[index],
-                                    generateShape((appModel.userAdapter.user
-                                            .ownListings[index])
-                                        .id),
-                                    index);
+                                return ImageTileSharing(listings[index],
+                                    generateShape((listings[index]).id), index);
                             },
                             staggeredTileBuilder: (int index) {
                               return new StaggeredTile.count(
-                                  1,
-                                  generateShape((appModel
-                                          .userAdapter.user.ownListings[index])
-                                      .id));
+                                  1, generateShape((listings[index]).id));
                             },
                             mainAxisSpacing: Globals.dwidth * 20,
                             crossAxisSpacing: Globals.dwidth * 20,

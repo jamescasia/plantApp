@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/DataModels/Listing.dart';
+import 'package:plantApp/Screens/OtherProfilePage.dart';
+import 'package:plantApp/Screens/ProfilePage.dart';
 import 'package:plantApp/Screens/elements/MapFragment.dart';
+
+import 'package:scoped_model/scoped_model.dart';
+import 'package:plantApp/ScopedModels/app_model.dart';
 
 class ViewShareListing extends StatefulWidget {
   ListingSharing listing;
@@ -367,230 +372,255 @@ class _ViewShareListingState extends State<ViewShareListing>
 
                                                     Center(
                                                       child: Container(
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            ClipRRect(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            300)),
-                                                                child:
-                                                                    Container(
-                                                                  width: Globals
-                                                                          .dheight *
-                                                                      50,
-                                                                  height: Globals
-                                                                          .dheight *
-                                                                      50,
-                                                                  child: Center(
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      imageUrl: listing
+                                                        child:
+                                                            ScopedModelDescendant<
+                                                                    AppModel>(
+                                                                builder: (context,
+                                                                    child,
+                                                                    appModel) {
+                                                          return InkWell(
+                                                            onTap: () {
+                                                                  if (listing
                                                                           .poster
-                                                                          .ppLink,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      progressIndicatorBuilder: (context,
-                                                                              url,
-                                                                              downloadProgress) =>
-                                                                          CircularProgressIndicator(
-                                                                              value: downloadProgress.progress),
-                                                                      errorWidget: (context,
-                                                                              url,
-                                                                              error) =>
-                                                                          Icon(Icons
-                                                                              .error),
-                                                                    ),
-                                                                  ),
-                                                                )),
-                                                            SizedBox(
-                                                                height: Globals
-                                                                        .dheight *
-                                                                    4),
-                                                            Text(
-                                                              "${listing.poster.name}",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              maxLines: 1,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Lato",
-                                                                  fontSize:
-                                                                      Globals.dwidth *
-                                                                          16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      700]),
+                                                                          .email ==
+                                                                      appModel
+                                                                          .userAdapter
+                                                                          .user
+                                                                          .userInfo
+                                                                          .email) {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        new MaterialPageRoute(
+                                                                            builder: (BuildContext context) =>
+                                                                                ProfilePage()));
+                                                                  } else
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        new MaterialPageRoute(
+                                                                            builder: (BuildContext context) =>
+                                                                                OtherProfilePage(listing.poster, appModel.getUserListings(listing.poster))));
+                                                                },
+                                                            child: Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            300)),
+                                                                    child:
+                                                                        Container(
+                                                                      width:
+                                                                          Globals.dheight *
+                                                                              50,
+                                                                      height:
+                                                                          Globals.dheight *
+                                                                              50,
+                                                                      child:
+                                                                          Center(
+                                                                        child:
+                                                                            CachedNetworkImage(
+                                                                          imageUrl: listing
+                                                                              .poster
+                                                                              .ppLink,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                                              CircularProgressIndicator(value: downloadProgress.progress),
+                                                                          errorWidget: (context, url, error) =>
+                                                                              Icon(Icons.error),
+                                                                        ),
+                                                                      ),
+                                                                    )),
+                                                                SizedBox(
+                                                                    height:
+                                                                        Globals.dheight *
+                                                                            4),
+                                                                Text(
+                                                                  "${listing.poster.name}",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .start,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines: 1,
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Lato",
+                                                                      fontSize:
+                                                                          Globals.dwidth *
+                                                                              16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          700]),
+                                                                ),
+                                                                // SizedBox(
+                                                                //   height: Globals
+                                                                //           .dheight *
+                                                                //       12,
+                                                                // ),
+                                                                // Container(
+                                                                //   width:
+                                                                //       Globals.width *
+                                                                //           0.6,
+                                                                //   child: InkWell(
+                                                                //     onTap: () {
+                                                                //       showGeneralDialog(
+                                                                //           barrierColor: Colors
+                                                                //               .black
+                                                                //               .withOpacity(
+                                                                //                   0.5),
+                                                                //           transitionBuilder:
+                                                                //               (context,
+                                                                //                   a1,
+                                                                //                   a2,
+                                                                //                   widget) {
+                                                                //             return Transform
+                                                                //                 .scale(
+                                                                //               scale: a1
+                                                                //                   .value,
+                                                                //               child: Opacity(
+                                                                //                   opacity:
+                                                                //                       a1.value,
+                                                                //                   child: MapFragment(double.parse(listing.poster.addressLatitude), double.parse(listing.poster.addressLongitude))),
+                                                                //             );
+                                                                //           },
+                                                                //           transitionDuration:
+                                                                //               Duration(
+                                                                //                   milliseconds:
+                                                                //                       200),
+                                                                //           barrierDismissible:
+                                                                //               false,
+                                                                //           barrierLabel:
+                                                                //               '',
+                                                                //           context:
+                                                                //               context,
+                                                                //           pageBuilder:
+                                                                //               (context,
+                                                                //                   animation1,
+                                                                //                   animation2) {});
+                                                                //     },
+                                                                //     child: Text(
+                                                                //       "${listing.poster.address}",
+                                                                //       // variable
+                                                                //       textAlign:
+                                                                //           TextAlign
+                                                                //               .center,
+                                                                //       style: TextStyle(
+                                                                //           decoration:
+                                                                //               TextDecoration
+                                                                //                   .underline,
+                                                                //           fontFamily:
+                                                                //               "Lato",
+                                                                //           fontSize:
+                                                                //               16,
+                                                                //           fontWeight:
+                                                                //               FontWeight
+                                                                //                   .w400,
+                                                                //           color: Colors
+                                                                //                   .green[
+                                                                //               400]),
+                                                                //     ),
+                                                                //   ),
+                                                                // ),
+                                                                // SizedBox(
+                                                                //     height: Globals
+                                                                //             .dheight *
+                                                                //         14),
+                                                                // MaterialButton(
+                                                                //     shape: RoundedRectangleBorder(
+                                                                //         borderRadius:
+                                                                //             BorderRadius.all(
+                                                                //                 Radius.circular(
+                                                                //                     300))),
+                                                                //     color: Globals
+                                                                //         .contactSellerViolet,
+                                                                //     onPressed: () {
+                                                                //       showGeneralDialog(
+                                                                //           barrierColor:
+                                                                //               Colors.black
+                                                                //                   .withAlpha(
+                                                                //                       1),
+                                                                //           transitionBuilder:
+                                                                //               (context,
+                                                                //                   a1,
+                                                                //                   a2,
+                                                                //                   widget) {
+                                                                //             return Transform
+                                                                //                 .translate(
+                                                                //               offset: Offset(
+                                                                //                   0,
+                                                                //                   -a1.value),
+                                                                //               child: Opacity(
+                                                                //                   opacity:
+                                                                //                       a1.value,
+                                                                //                   child: ContactDetailsPopup(listing.poster.mainPhoneNumber, listing.poster.altPhoneNumber)),
+                                                                //             );
+                                                                //           },
+                                                                //           transitionDuration:
+                                                                //               Duration(
+                                                                //                   milliseconds:
+                                                                //                       200),
+                                                                //           barrierDismissible:
+                                                                //               true,
+                                                                //           barrierLabel:
+                                                                //               '',
+                                                                //           context:
+                                                                //               context,
+                                                                //           pageBuilder:
+                                                                //               (context,
+                                                                //                   animation1,
+                                                                //                   animation2) {});
+                                                                //     },
+                                                                //     child: Container(
+                                                                //       width: Globals
+                                                                //               .width *
+                                                                //           0.4,
+                                                                //       height: Globals
+                                                                //               .dheight *
+                                                                //           46,
+                                                                //       child: Stack(
+                                                                //         children: <
+                                                                //             Widget>[
+                                                                //           Center(
+                                                                //             child:
+                                                                //                 Text(
+                                                                //               "Contact Seller",
+                                                                //               textAlign:
+                                                                //                   TextAlign.center,
+                                                                //               style: TextStyle(
+                                                                //                   fontFamily:
+                                                                //                       "Lato",
+                                                                //                   fontSize:
+                                                                //                       18,
+                                                                //                   fontWeight:
+                                                                //                       FontWeight.w700,
+                                                                //                   color: Colors.white),
+                                                                //             ),
+                                                                //           ),
+                                                                //           // Positioned(
+                                                                //           //     right:
+                                                                //           //         Globals.dwidth *
+                                                                //           //             4,
+                                                                //           //     top: 0,
+                                                                //           //     bottom: 0,
+                                                                //           //     child: Align(
+                                                                //           //         alignment: Alignment
+                                                                //           //             .centerRight,
+                                                                //           //         child: FaIcon(
+                                                                //           //             FontAwesomeIcons.times,
+                                                                //           //             color: Colors.white,
+                                                                //           //             size: Globals.dwidth * 30)))
+                                                                //         ],
+                                                                //       ),
+                                                                //     ))
+                                                              ],
                                                             ),
-                                                            // SizedBox(
-                                                            //   height: Globals
-                                                            //           .dheight *
-                                                            //       12,
-                                                            // ),
-                                                            // Container(
-                                                            //   width:
-                                                            //       Globals.width *
-                                                            //           0.6,
-                                                            //   child: InkWell(
-                                                            //     onTap: () {
-                                                            //       showGeneralDialog(
-                                                            //           barrierColor: Colors
-                                                            //               .black
-                                                            //               .withOpacity(
-                                                            //                   0.5),
-                                                            //           transitionBuilder:
-                                                            //               (context,
-                                                            //                   a1,
-                                                            //                   a2,
-                                                            //                   widget) {
-                                                            //             return Transform
-                                                            //                 .scale(
-                                                            //               scale: a1
-                                                            //                   .value,
-                                                            //               child: Opacity(
-                                                            //                   opacity:
-                                                            //                       a1.value,
-                                                            //                   child: MapFragment(double.parse(listing.poster.addressLatitude), double.parse(listing.poster.addressLongitude))),
-                                                            //             );
-                                                            //           },
-                                                            //           transitionDuration:
-                                                            //               Duration(
-                                                            //                   milliseconds:
-                                                            //                       200),
-                                                            //           barrierDismissible:
-                                                            //               false,
-                                                            //           barrierLabel:
-                                                            //               '',
-                                                            //           context:
-                                                            //               context,
-                                                            //           pageBuilder:
-                                                            //               (context,
-                                                            //                   animation1,
-                                                            //                   animation2) {});
-                                                            //     },
-                                                            //     child: Text(
-                                                            //       "${listing.poster.address}",
-                                                            //       // variable
-                                                            //       textAlign:
-                                                            //           TextAlign
-                                                            //               .center,
-                                                            //       style: TextStyle(
-                                                            //           decoration:
-                                                            //               TextDecoration
-                                                            //                   .underline,
-                                                            //           fontFamily:
-                                                            //               "Lato",
-                                                            //           fontSize:
-                                                            //               16,
-                                                            //           fontWeight:
-                                                            //               FontWeight
-                                                            //                   .w400,
-                                                            //           color: Colors
-                                                            //                   .green[
-                                                            //               400]),
-                                                            //     ),
-                                                            //   ),
-                                                            // ),
-                                                            // SizedBox(
-                                                            //     height: Globals
-                                                            //             .dheight *
-                                                            //         14),
-                                                            // MaterialButton(
-                                                            //     shape: RoundedRectangleBorder(
-                                                            //         borderRadius:
-                                                            //             BorderRadius.all(
-                                                            //                 Radius.circular(
-                                                            //                     300))),
-                                                            //     color: Globals
-                                                            //         .contactSellerViolet,
-                                                            //     onPressed: () {
-                                                            //       showGeneralDialog(
-                                                            //           barrierColor:
-                                                            //               Colors.black
-                                                            //                   .withAlpha(
-                                                            //                       1),
-                                                            //           transitionBuilder:
-                                                            //               (context,
-                                                            //                   a1,
-                                                            //                   a2,
-                                                            //                   widget) {
-                                                            //             return Transform
-                                                            //                 .translate(
-                                                            //               offset: Offset(
-                                                            //                   0,
-                                                            //                   -a1.value),
-                                                            //               child: Opacity(
-                                                            //                   opacity:
-                                                            //                       a1.value,
-                                                            //                   child: ContactDetailsPopup(listing.poster.mainPhoneNumber, listing.poster.altPhoneNumber)),
-                                                            //             );
-                                                            //           },
-                                                            //           transitionDuration:
-                                                            //               Duration(
-                                                            //                   milliseconds:
-                                                            //                       200),
-                                                            //           barrierDismissible:
-                                                            //               true,
-                                                            //           barrierLabel:
-                                                            //               '',
-                                                            //           context:
-                                                            //               context,
-                                                            //           pageBuilder:
-                                                            //               (context,
-                                                            //                   animation1,
-                                                            //                   animation2) {});
-                                                            //     },
-                                                            //     child: Container(
-                                                            //       width: Globals
-                                                            //               .width *
-                                                            //           0.4,
-                                                            //       height: Globals
-                                                            //               .dheight *
-                                                            //           46,
-                                                            //       child: Stack(
-                                                            //         children: <
-                                                            //             Widget>[
-                                                            //           Center(
-                                                            //             child:
-                                                            //                 Text(
-                                                            //               "Contact Seller",
-                                                            //               textAlign:
-                                                            //                   TextAlign.center,
-                                                            //               style: TextStyle(
-                                                            //                   fontFamily:
-                                                            //                       "Lato",
-                                                            //                   fontSize:
-                                                            //                       18,
-                                                            //                   fontWeight:
-                                                            //                       FontWeight.w700,
-                                                            //                   color: Colors.white),
-                                                            //             ),
-                                                            //           ),
-                                                            //           // Positioned(
-                                                            //           //     right:
-                                                            //           //         Globals.dwidth *
-                                                            //           //             4,
-                                                            //           //     top: 0,
-                                                            //           //     bottom: 0,
-                                                            //           //     child: Align(
-                                                            //           //         alignment: Alignment
-                                                            //           //             .centerRight,
-                                                            //           //         child: FaIcon(
-                                                            //           //             FontAwesomeIcons.times,
-                                                            //           //             color: Colors.white,
-                                                            //           //             size: Globals.dwidth * 30)))
-                                                            //         ],
-                                                            //       ),
-                                                            //     ))
-                                                          ],
-                                                        ),
+                                                          );
+                                                        }),
                                                       ),
                                                     )
                                                   ]),

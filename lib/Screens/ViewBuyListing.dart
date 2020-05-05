@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/DataModels/Listing.dart';
+import 'package:plantApp/Screens/OtherProfilePage.dart';
+import 'package:plantApp/Screens/ProfilePage.dart';
 import 'package:plantApp/Screens/elements/MapFragment.dart';
+
+import 'package:scoped_model/scoped_model.dart';
+import 'package:plantApp/ScopedModels/app_model.dart';
 
 class ViewBuyListing extends StatefulWidget {
   ListingBuying listing;
@@ -415,66 +420,85 @@ class _ViewBuyListingState extends State<ViewBuyListing>
                                                       child: Container(
                                                         child: Column(
                                                           children: <Widget>[
-                                                            ClipRRect(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            300)),
-                                                                child:
-                                                                    Container(
-                                                                  width: Globals
-                                                                          .dheight *
-                                                                      50,
-                                                                  height: Globals
-                                                                          .dheight *
-                                                                      50,
-                                                                  child: Center(
-                                                                    child:
-                                                                        CachedNetworkImage(
-                                                                      imageUrl: listing
+                                                            ScopedModelDescendant<
+                                                                    AppModel>(
+                                                                builder: (context,
+                                                                    child,
+                                                                    appModel) {
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  if (listing
                                                                           .poster
-                                                                          .ppLink,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      progressIndicatorBuilder: (context,
-                                                                              url,
-                                                                              downloadProgress) =>
-                                                                          CircularProgressIndicator(
-                                                                              value: downloadProgress.progress),
-                                                                      errorWidget: (context,
-                                                                              url,
-                                                                              error) =>
-                                                                          Icon(Icons
-                                                                              .error),
+                                                                          .email ==
+                                                                      appModel
+                                                                          .userAdapter
+                                                                          .user
+                                                                          .userInfo
+                                                                          .email) {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        new MaterialPageRoute(
+                                                                            builder: (BuildContext context) =>
+                                                                                ProfilePage()));
+                                                                  } else
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        new MaterialPageRoute(
+                                                                            builder: (BuildContext context) =>
+                                                                                OtherProfilePage(listing.poster, appModel.getUserListings(listing.poster))));
+                                                                },
+                                                                child: Column(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                300)),
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              Globals.dheight * 50,
+                                                                          height:
+                                                                              Globals.dheight * 50,
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                CachedNetworkImage(
+                                                                              imageUrl: listing.poster.ppLink,
+                                                                              fit: BoxFit.cover,
+                                                                              progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                                                                              errorWidget: (context, url, error) => Icon(Icons.error),
+                                                                            ),
+                                                                          ),
+                                                                        )),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            Globals.dheight *
+                                                                                4),
+                                                                    Text(
+                                                                      "${listing.poster.name}",
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .start,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Lato",
+                                                                          fontSize: Globals.dwidth *
+                                                                              16,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          color:
+                                                                              Colors.grey[700]),
                                                                     ),
-                                                                  ),
-                                                                )),
-                                                            SizedBox(
-                                                                height: Globals
-                                                                        .dheight *
-                                                                    4),
-                                                            Text(
-                                                              "${listing.poster.name}",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              maxLines: 1,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Lato",
-                                                                  fontSize:
-                                                                      Globals.dwidth *
-                                                                          16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      700]),
-                                                            ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            }),
                                                             SizedBox(
                                                               height: Globals
                                                                       .dheight *

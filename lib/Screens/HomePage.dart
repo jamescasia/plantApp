@@ -5,16 +5,15 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
 import 'package:plantApp/DataModels/Listing.dart';
-import 'package:plantApp/Screens/LogInPage.dart';
+import 'package:plantApp/ScopedModels/app_model.dart';
 import 'package:plantApp/Screens/AddPostPage.dart';
-import 'package:plantApp/Screens/elements/ImageTile.dart';
+import 'package:plantApp/Screens/LogInPage.dart';
 import 'package:plantApp/Screens/elements/ImageTileBuying.dart';
 import 'package:plantApp/Screens/elements/ImageTileSelling.dart';
 import 'package:plantApp/Screens/elements/ImageTileSharing.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
-
 import 'package:scoped_model/scoped_model.dart';
-import 'package:plantApp/ScopedModels/app_model.dart';
+
 import 'ProfilePage.dart';
 
 class HomePage extends StatefulWidget {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:plantApp/DataModels/Listing.dart';
+import 'package:plantApp/DataModels/UserInfo.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:plantApp/UtilityModels/UserAdapter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -399,6 +400,16 @@ class AppModel extends Model {
     });
 
     userAdapter.user.allListings.shuffle();
+  }
+
+  getUserListings(UserInfo user) {
+    var otherListings = [];
+    userAdapter.user.allListings.forEach((slt) {
+      if (slt.poster.email == user.email) {
+        otherListings.add(slt);
+      }
+    });
+    return otherListings;
   }
 }
 
