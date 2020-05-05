@@ -200,482 +200,494 @@ class _ViewSellListingState extends State<ViewSellListing>
               Positioned(
                   bottom: 0,
                   left: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
+                  child: GestureDetector(
+                    onPanUpdate: (a) {
+                      if (a.delta.dy > 0) {
+                        isExpanded = false;
+                      } else if (a.delta.dy < 0) {
+                        isExpanded = true;
+                      }
+                      setState(() {});
+                      print(a.delta);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[800],
+                              blurRadius: 4.0,
+                              offset: Offset(0, 6),
+                            ),
+                          ]),
+                      child: ClipRRect(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[800],
-                            blurRadius: 4.0,
-                            offset: Offset(0, 6),
-                          ),
-                        ]),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            isExpanded = !isExpanded;
-                          });
-                        },
-                        child: AnimatedContainer(
-                          curve: Curves.fastLinearToSlowEaseIn,
-                          duration: Duration(milliseconds: 300),
-                          width: Globals.width,
-                          height: (isExpanded)
-                              ? Globals.height * 0.59
-                              : Globals.height * 0.38,
-                          color: Globals.commonGreen,
-                          child: Stack(children: [
-                            Positioned(
-                              bottom: 0,
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    width: Globals.width,
-                                    height: Globals.height * 0.12,
-                                    alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.only(
-                                        left: Globals.dwidth * 24,
-                                        bottom: Globals.dwidth * 8),
-                                    child: Flex(
-                                      direction: Axis.horizontal,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            "${listing.title}",
-                                            // variable
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontFamily: "Lato",
-                                                fontSize: Globals.dwidth * 28,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                        Expanded(flex: 1, child: SizedBox()),
-                                      ],
-                                    ),
-                                  ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(40),
-                                        bottomLeft: Radius.circular(40),
-                                        topRight: Radius.circular(0),
-                                        bottomRight: Radius.circular(40)),
-                                    child: AnimatedContainer(
-                                      curve: Curves.fastLinearToSlowEaseIn,
-                                      duration: Duration(milliseconds: 300),
-                                      color: Colors.white,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                          child: AnimatedContainer(
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            duration: Duration(milliseconds: 300),
+                            width: Globals.width,
+                            height: (isExpanded)
+                                ? Globals.height * 0.59
+                                : Globals.height * 0.38,
+                            color: Globals.commonGreen,
+                            child: Stack(children: [
+                              Positioned(
+                                bottom: 0,
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
                                       width: Globals.width,
-                                      padding:
-                                          EdgeInsets.all(Globals.dwidth * 2),
-                                      height: (isExpanded)
-                                          ? Globals.height * 0.445
-                                          : 0.24 * Globals.height,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        child: SingleChildScrollView(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          child: Container(
-                                            height: Globals.height * 0.445,
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  // variable
-                                                  SizedBox(
-                                                    height: 3 * Globals.dheight,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                          width:
-                                                              Globals.dwidth *
-                                                                  12),
-                                                      Text(
-                                                        "${month[DateTime.parse(listing.datePosted).month - 1]} ${DateTime.parse(listing.datePosted).day}",
+                                      height: Globals.height * 0.12,
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.only(
+                                          left: Globals.dwidth * 24,
+                                          bottom: Globals.dwidth * 8),
+                                      child: Flex(
+                                        direction: Axis.horizontal,
+                                        children: <Widget>[
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              "${listing.title}",
+                                              // variable
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontFamily: "Lato",
+                                                  fontSize: Globals.dwidth * 28,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          Expanded(flex: 1, child: SizedBox()),
+                                        ],
+                                      ),
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(40),
+                                          bottomLeft: Radius.circular(40),
+                                          topRight: Radius.circular(0),
+                                          bottomRight: Radius.circular(40)),
+                                      child: AnimatedContainer(
+                                        curve: Curves.fastLinearToSlowEaseIn,
+                                        duration: Duration(milliseconds: 300),
+                                        color: Colors.white,
+                                        width: Globals.width,
+                                        padding:
+                                            EdgeInsets.all(Globals.dwidth * 2),
+                                        height: (isExpanded)
+                                            ? Globals.height * 0.445
+                                            : 0.24 * Globals.height,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: SingleChildScrollView(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            child: Container(
+                                              height: Globals.height * 0.445,
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    // variable
+                                                    SizedBox(
+                                                      height:
+                                                          3 * Globals.dheight,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        SizedBox(
+                                                            width:
+                                                                Globals.dwidth *
+                                                                    12),
+                                                        Text(
+                                                          "${month[DateTime.parse(listing.datePosted).month - 1]} ${DateTime.parse(listing.datePosted).day}",
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Lato",
+                                                              fontSize: Globals
+                                                                      .dwidth *
+                                                                  14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                              color: Colors
+                                                                  .grey[500]),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    SizedBox(
+                                                        height:
+                                                            Globals.dheight *
+                                                                6),
+
+                                                    Container(
+                                                      height:
+                                                          Globals.dheight * 26,
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          FlairChip("SELLING"),
+                                                          SizedBox(
+                                                            width:
+                                                                Globals.dwidth *
+                                                                    6,
+                                                          ),
+                                                          listing.isCOD
+                                                              ? FlairChip("COD")
+                                                              : SizedBox(width:0),
+                                                          SizedBox(
+                                                            width:
+                                                                Globals.dwidth *
+                                                                    6,
+                                                          ),
+                                                          listing.isPickup
+                                                              ? FlairChip(
+                                                                  "Pickup")
+                                                              : SizedBox(width:0),
+                                                          SizedBox(
+                                                            width:
+                                                                Globals.dwidth *
+                                                                    6,
+                                                          ),
+                                                          listing.isNegotiable
+                                                              ? FlairChip(
+                                                                  "Negotiable")
+                                                              : SizedBox(width:0),
+                                                        ],
+                                                      ),
+                                                    ),
+
+                                                    SizedBox(
+                                                        height:
+                                                            Globals.dheight *
+                                                                6),
+
+                                                    Container(
+                                                      height:
+                                                          Globals.dheight * 74,
+                                                      child: Text(
+                                                        "${listing.desc}",
                                                         textAlign:
                                                             TextAlign.start,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 4,
                                                         style: TextStyle(
                                                             fontFamily: "Lato",
                                                             fontSize:
                                                                 Globals.dwidth *
-                                                                    14,
+                                                                    16,
                                                             fontWeight:
-                                                                FontWeight.w300,
+                                                                FontWeight.w400,
                                                             color: Colors
-                                                                .grey[500]),
+                                                                .grey[600]),
                                                       ),
-                                                    ],
-                                                  ),
-
-                                                  SizedBox(
-                                                      height:
-                                                          Globals.dheight * 6),
-
-                                                  Container(
-                                                    height:
-                                                        Globals.dheight * 26,
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        FlairChip("SELLING"),
-                                                        SizedBox(
-                                                          width:
-                                                              Globals.dwidth *
-                                                                  6,
-                                                        ),
-                                                        listing.isCOD
-                                                            ? FlairChip("COD")
-                                                            : SizedBox(),
-                                                        SizedBox(
-                                                          width:
-                                                              Globals.dwidth *
-                                                                  6,
-                                                        ),
-                                                        listing.isPickup
-                                                            ? FlairChip(
-                                                                "Pickup")
-                                                            : SizedBox(),
-                                                        SizedBox(
-                                                          width:
-                                                              Globals.dwidth *
-                                                                  6,
-                                                        ),
-                                                        listing.isNegotiable
-                                                            ? FlairChip(
-                                                                "Negotiable")
-                                                            : SizedBox(),
-                                                      ],
                                                     ),
-                                                  ),
 
-                                                  SizedBox(
-                                                      height:
-                                                          Globals.dheight * 6),
+                                                    SizedBox(
+                                                        height:
+                                                            Globals.dheight *
+                                                                20),
 
-                                                  Container(
-                                                    height:
-                                                        Globals.dheight * 74,
-                                                    child: Text(
-                                                      "${listing.desc}",
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 4,
-                                                      style: TextStyle(
-                                                          fontFamily: "Lato",
-                                                          fontSize:
-                                                              Globals.dwidth *
-                                                                  16,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color:
-                                                              Colors.grey[600]),
-                                                    ),
-                                                  ),
-
-                                                  SizedBox(
-                                                      height:
-                                                          Globals.dheight * 20),
-
-                                                  Center(
-                                                    child: Container(
-                                                      child: Column(
-                                                        children: <Widget>[
-                                                          ClipRRect(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          300)),
-                                                              child: Container(
-                                                                width: Globals
-                                                                        .dheight *
-                                                                    50,
+                                                    Center(
+                                                      child: Container(
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            ClipRRect(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            300)),
+                                                                child:
+                                                                    Container(
+                                                                  width: Globals
+                                                                          .dheight *
+                                                                      50,
+                                                                  height: Globals
+                                                                          .dheight *
+                                                                      50,
+                                                                  child: Center(
+                                                                    child:
+                                                                        CachedNetworkImage(
+                                                                      imageUrl: listing
+                                                                          .poster
+                                                                          .ppLink,
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      progressIndicatorBuilder: (context,
+                                                                              url,
+                                                                              downloadProgress) =>
+                                                                          CircularProgressIndicator(
+                                                                              value: downloadProgress.progress),
+                                                                      errorWidget: (context,
+                                                                              url,
+                                                                              error) =>
+                                                                          Icon(Icons
+                                                                              .error),
+                                                                    ),
+                                                                  ),
+                                                                )),
+                                                            SizedBox(
                                                                 height: Globals
                                                                         .dheight *
-                                                                    50,
-                                                                child: Center(
-                                                                  child:
-                                                                      CachedNetworkImage(
-                                                                    imageUrl: listing
-                                                                        .poster
-                                                                        .ppLink,
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                    progressIndicatorBuilder: (context,
-                                                                            url,
-                                                                            downloadProgress) =>
-                                                                        CircularProgressIndicator(
-                                                                            value:
-                                                                                downloadProgress.progress),
-                                                                    errorWidget: (context,
-                                                                            url,
-                                                                            error) =>
-                                                                        Icon(Icons
-                                                                            .error),
-                                                                  ),
-                                                                ),
-                                                              )),
-                                                          SizedBox(
+                                                                    4),
+                                                            Text(
+                                                              "${listing.poster.name}",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Lato",
+                                                                  fontSize:
+                                                                      Globals.dwidth *
+                                                                          16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      700]),
+                                                            ),
+                                                            SizedBox(
                                                               height: Globals
                                                                       .dheight *
-                                                                  4),
-                                                          Text(
-                                                            "${listing.poster.name}",
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 1,
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "Lato",
-                                                                fontSize: Globals
-                                                                        .dwidth *
-                                                                    16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: Colors
-                                                                    .grey[700]),
-                                                          ),
-                                                          SizedBox(
-                                                            height: Globals
-                                                                    .dheight *
-                                                                12,
-                                                          ),
-                                                          Container(
-                                                            width:
-                                                                Globals.width *
-                                                                    0.6,
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                showGeneralDialog(
-                                                                    barrierColor: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.5),
-                                                                    transitionBuilder:
-                                                                        (context,
-                                                                            a1,
-                                                                            a2,
-                                                                            widget) {
-                                                                      return Transform
-                                                                          .scale(
-                                                                        scale: a1
-                                                                            .value,
-                                                                        child: Opacity(
-                                                                            opacity:
-                                                                                a1.value,
-                                                                            child: MapFragment(double.parse(listing.poster.addressLatitude), double.parse(listing.poster.addressLongitude))),
-                                                                      );
-                                                                    },
-                                                                    transitionDuration:
-                                                                        Duration(
-                                                                            milliseconds:
-                                                                                200),
-                                                                    barrierDismissible:
-                                                                        false,
-                                                                    barrierLabel:
-                                                                        '',
-                                                                    context:
-                                                                        context,
-                                                                    pageBuilder:
-                                                                        (context,
-                                                                            animation1,
-                                                                            animation2) {});
-                                                              },
-                                                              child: Text(
-                                                                "${listing.poster.address}",
-                                                                // variable
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    fontFamily:
-                                                                        "Lato",
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    color: Colors
-                                                                            .green[
-                                                                        400]),
+                                                                  12,
+                                                            ),
+                                                            Container(
+                                                              width: Globals
+                                                                      .width *
+                                                                  0.6,
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  showGeneralDialog(
+                                                                      barrierColor: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      transitionBuilder:
+                                                                          (context,
+                                                                              a1,
+                                                                              a2,
+                                                                              widget) {
+                                                                        return Transform
+                                                                            .scale(
+                                                                          scale:
+                                                                              a1.value,
+                                                                          child: Opacity(
+                                                                              opacity: a1.value,
+                                                                              child: MapFragment(double.parse(listing.poster.addressLatitude), double.parse(listing.poster.addressLongitude))),
+                                                                        );
+                                                                      },
+                                                                      transitionDuration: Duration(
+                                                                          milliseconds:
+                                                                              200),
+                                                                      barrierDismissible:
+                                                                          false,
+                                                                      barrierLabel:
+                                                                          '',
+                                                                      context:
+                                                                          context,
+                                                                      pageBuilder: (context,
+                                                                          animation1,
+                                                                          animation2) {});
+                                                                },
+                                                                child: Text(
+                                                                  "${listing.poster.address}",
+                                                                  // variable
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .underline,
+                                                                      fontFamily:
+                                                                          "Lato",
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: Colors
+                                                                              .green[
+                                                                          400]),
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                              height: Globals
-                                                                      .dheight *
-                                                                  14),
-                                                          MaterialButton(
-                                                              shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              300))),
-                                                              color: Globals
-                                                                  .contactSellerViolet,
-                                                              onPressed: () {
-                                                                showGeneralDialog(
-                                                                    barrierColor:
-                                                                        Colors.black
-                                                                            .withAlpha(
-                                                                                1),
-                                                                    transitionBuilder:
-                                                                        (context,
-                                                                            a1,
-                                                                            a2,
-                                                                            widget) {
-                                                                      return Transform
-                                                                          .translate(
-                                                                        offset: Offset(
-                                                                            0,
-                                                                            -a1.value),
-                                                                        child: Opacity(
-                                                                            opacity:
-                                                                                a1.value,
-                                                                            child: ContactDetailsPopup(listing.poster.mainPhoneNumber, listing.poster.altPhoneNumber)),
-                                                                      );
-                                                                    },
-                                                                    transitionDuration:
-                                                                        Duration(
-                                                                            milliseconds:
-                                                                                200),
-                                                                    barrierDismissible:
-                                                                        true,
-                                                                    barrierLabel:
-                                                                        '',
-                                                                    context:
-                                                                        context,
-                                                                    pageBuilder:
-                                                                        (context,
-                                                                            animation1,
-                                                                            animation2) {});
-                                                              },
-                                                              child: Container(
-                                                                width: Globals
-                                                                        .width *
-                                                                    0.4,
+                                                            SizedBox(
                                                                 height: Globals
                                                                         .dheight *
-                                                                    46,
-                                                                child: Stack(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Center(
-                                                                      child:
-                                                                          Text(
-                                                                        "Contact Seller",
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        style: TextStyle(
-                                                                            fontFamily:
-                                                                                "Lato",
-                                                                            fontSize:
-                                                                                18,
-                                                                            fontWeight:
-                                                                                FontWeight.w700,
-                                                                            color: Colors.white),
+                                                                    14),
+                                                            MaterialButton(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            300))),
+                                                                color: Globals
+                                                                    .contactSellerViolet,
+                                                                onPressed: () {
+                                                                  showGeneralDialog(
+                                                                      barrierColor: Colors
+                                                                          .black
+                                                                          .withAlpha(
+                                                                              1),
+                                                                      transitionBuilder:
+                                                                          (context,
+                                                                              a1,
+                                                                              a2,
+                                                                              widget) {
+                                                                        return Transform
+                                                                            .translate(
+                                                                          offset: Offset(
+                                                                              0,
+                                                                              -a1.value),
+                                                                          child: Opacity(
+                                                                              opacity: a1.value,
+                                                                              child: ContactDetailsPopup(listing.poster.mainPhoneNumber, listing.poster.altPhoneNumber)),
+                                                                        );
+                                                                      },
+                                                                      transitionDuration: Duration(
+                                                                          milliseconds:
+                                                                              200),
+                                                                      barrierDismissible:
+                                                                          true,
+                                                                      barrierLabel:
+                                                                          '',
+                                                                      context:
+                                                                          context,
+                                                                      pageBuilder: (context,
+                                                                          animation1,
+                                                                          animation2) {});
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  width: Globals
+                                                                          .width *
+                                                                      0.4,
+                                                                  height: Globals
+                                                                          .dheight *
+                                                                      46,
+                                                                  child: Stack(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      Center(
+                                                                        child:
+                                                                            Text(
+                                                                          "Contact Seller",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: TextStyle(
+                                                                              fontFamily: "Lato",
+                                                                              fontSize: 18,
+                                                                              fontWeight: FontWeight.w700,
+                                                                              color: Colors.white),
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                    // Positioned(
-                                                                    //     right:
-                                                                    //         Globals.dwidth *
-                                                                    //             4,
-                                                                    //     top: 0,
-                                                                    //     bottom: 0,
-                                                                    //     child: Align(
-                                                                    //         alignment: Alignment
-                                                                    //             .centerRight,
-                                                                    //         child: FaIcon(
-                                                                    //             FontAwesomeIcons.times,
-                                                                    //             color: Colors.white,
-                                                                    //             size: Globals.dwidth * 30)))
-                                                                  ],
-                                                                ),
-                                                              ))
-                                                        ],
+                                                                      // Positioned(
+                                                                      //     right:
+                                                                      //         Globals.dwidth *
+                                                                      //             4,
+                                                                      //     top: 0,
+                                                                      //     bottom: 0,
+                                                                      //     child: Align(
+                                                                      //         alignment: Alignment
+                                                                      //             .centerRight,
+                                                                      //         child: FaIcon(
+                                                                      //             FontAwesomeIcons.times,
+                                                                      //             color: Colors.white,
+                                                                      //             size: Globals.dwidth * 30)))
+                                                                    ],
+                                                                  ),
+                                                                ))
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  )
-                                                ]),
+                                                    )
+                                                  ]),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              right: Globals.dwidth * 14,
-                              top: Globals.dheight * 90,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Globals.profileYellow,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey[600],
-                                        blurRadius: 1.0,
-                                        offset: Offset(0, 0.5),
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: Globals.dwidth * 10,
-                                    vertical: Globals.dwidth * 3),
-                                child: Wrap(
-                                    alignment: WrapAlignment.center,
-                                    crossAxisAlignment: WrapCrossAlignment.end,
-                                    children: [
-                                      // variable
-                                      Text(
-                                        "P ${listing.price.round()}",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontFamily: "Lato",
-                                            fontSize: Globals.dwidth * 28,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            bottom: Globals.dwidth * 4),
-                                        child: Text(
-                                          priceLabelToString(
-                                              listing.priceLabel),
+                              Positioned(
+                                right: Globals.dwidth * 14,
+                                top: Globals.dheight * 90,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Globals.profileYellow,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey[600],
+                                          blurRadius: 1.0,
+                                          offset: Offset(0, 0.5),
+                                        ),
+                                      ],
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8))),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: Globals.dwidth * 10,
+                                      vertical: Globals.dwidth * 3),
+                                  child: Wrap(
+                                      alignment: WrapAlignment.center,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.end,
+                                      children: [
+                                        // variable
+                                        Text(
+                                          "P ${listing.price.round()}",
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                               fontFamily: "Lato",
-                                              fontSize: Globals.dwidth * 14,
+                                              fontSize: Globals.dwidth * 28,
                                               fontWeight: FontWeight.w600,
                                               color: Colors.white),
                                         ),
-                                      )
-                                    ]),
-                              ),
-                            )
-                          ]),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: Globals.dwidth * 4),
+                                          child: Text(
+                                            priceLabelToString(
+                                                listing.priceLabel),
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontFamily: "Lato",
+                                                fontSize: Globals.dwidth * 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                        )
+                                      ]),
+                                ),
+                              )
+                            ]),
+                          ),
                         ),
                       ),
                     ),

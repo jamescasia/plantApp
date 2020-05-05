@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:plantApp/DataModels/Listing.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -67,7 +68,7 @@ class AppModel extends Model {
 
     listenForNewBuyListings =
         appDatabase.buyListingsRef.onChildAdded.listen((event) {
-      if (!sellListingsIds.contains(event.snapshot.key)) {
+      if (!buyListingsIds.contains(event.snapshot.key)) {
         ListingBuying ls =
             ListingBuying.fromJson(jsonDecode(event.snapshot.value.toString()));
 
@@ -249,6 +250,8 @@ class AppModel extends Model {
         await appDatabase.fetchUserInfo(userAdapter.uid);
 
     await homePageFetchSellListings();
+    await homePageFetchBuyListings();
+    await homePageFetchShareListings();
     initializeListeners();
   }
 
@@ -354,14 +357,18 @@ class AppModel extends Model {
       if (!sellListingsIds.contains(slt.id)) {
         sellListingsIds.add(slt.id);
 
+
         userAdapter.user.sellListings.add(slt);
         userAdapter.user.allListings.add(slt);
+        // userAdapter.user.sellListings
+        //     .insert(Random().nextInt(sellListings.length), slt);
+        // userAdapter.user.allListings
+        //     .insert(Random().nextInt(sellListings.length), slt);
       }
     });
 
-    userAdapter.user.allListings.shuffle();
     print("all listings");
-    print(userAdapter.user.allListings);
+    // print(userAdapter.user.allListings);
   }
 
   homePageFetchBuyListings() async {
@@ -386,6 +393,8 @@ class AppModel extends Model {
         userAdapter.user.allListings.add(slt);
       }
     });
+
+    userAdapter.user.allListings.shuffle();
   }
 }
 
