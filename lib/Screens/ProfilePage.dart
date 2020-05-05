@@ -1,16 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plantApp/DataModels/Globals.dart';
-import 'package:plantApp/Screens/HomePage.dart';
+import 'package:plantApp/ScopedModels/app_model.dart';
 import 'package:plantApp/Screens/LogInPage.dart';
+import 'package:plantApp/Screens/elements/ImageTile.dart';
 import 'package:plantApp/Screens/elements/MapFragment.dart';
 import 'package:plantApp/helpers/scroll_behaviour.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:plantApp/Screens/elements/ImageTile.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:plantApp/ScopedModels/app_model.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -104,10 +103,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 progressIndicatorBuilder:
                                                     (context, url,
                                                             downloadProgress) =>
-                                                        CircularProgressIndicator(
-                                                            value:
-                                                                downloadProgress
-                                                                    .progress),
+                                                        Center(
+                                                          child: CircularProgressIndicator(
+                                                              value:
+                                                                  downloadProgress
+                                                                      .progress),
+                                                        ),
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         Icon(Icons.error),
@@ -171,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   },
                                                   transitionDuration: Duration(
                                                       milliseconds: 200),
-                                                  barrierDismissible: true,
+                                                  barrierDismissible: false,
                                                   barrierLabel: '',
                                                   context: context,
                                                   pageBuilder: (context,

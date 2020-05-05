@@ -35,11 +35,13 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
     return Padding(
       padding: EdgeInsets.only(top: (index == 0 || index == 1) ? 20 : 0),
       child: Material(
+        color:Colors.white,
         child: ClipRRect(
           borderRadius: BorderRadius.all(
             Radius.circular(24),
           ),
           child: InkWell(
+              borderRadius: BorderRadius.all(Radius.circular(24)),
               highlightColor: Colors.red.withAlpha(0),
               splashColor: Colors.red.withAlpha(0),
               focusColor: Colors.red.withAlpha(0),
@@ -64,8 +66,10 @@ class _ImageTileSellingState extends State<ImageTileSelling> {
                         fit: BoxFit.cover,
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
+                                Center(
+                                  child: CircularProgressIndicator(
+                                      value: downloadProgress.progress),
+                                ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
