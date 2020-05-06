@@ -10,7 +10,9 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'HomePage.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -30,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String address = "";
   String addressLatitude = "";
   String addressLongitude = "";
+  File image1;
 
   double safePadding = 0;
 
@@ -140,33 +143,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                             MainAxisAlignment.spaceEvenly,
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          // Container(
-                                          //   margin: EdgeInsets.symmetric(
-                                          //       vertical: Globals.dheight * 7),
-                                          //   height: Globals.dheight * 50,
-                                          //   decoration: BoxDecoration(
-                                          //       color: Colors.grey[350],
-                                          //       borderRadius: BorderRadius.all(
-                                          //           Radius.circular(10)),
-                                          //       border: Border.all(
-                                          //           color: Colors.grey[400])),
-                                          //   padding: EdgeInsets.only(
-                                          //       left: 10,
-                                          //       right: 10,
-                                          //       bottom: 10),
-                                          //   width: Globals.width * 0.8,
-                                          //   child: Center(
-                                          //     child: TextField(
-                                          //       style: TextStyle(
-                                          //           fontFamily: "Lato"),
-                                          //       controller: nameController,
-                                          //       decoration: new InputDecoration
-                                          //               .collapsed(
-                                          //           hintText: 'Name'),
-                                          //     ),
-                                          //   ),
-                                          // ),
-
                                           Container(
                                             margin: EdgeInsets.symmetric(
                                                 vertical: Globals.dheight * 7),
@@ -227,7 +203,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                               ),
                                             ),
                                           ),
-
                                           Container(
                                             margin: EdgeInsets.symmetric(
                                                 vertical: Globals.dheight * 7),
@@ -254,7 +229,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                               ),
                                             ),
                                           ),
-
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
@@ -322,7 +296,95 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       : Colors.green)
                                             ],
                                           ),
-
+                                          InkWell(
+                                            onTap: () async {
+                                              image1 =
+                                                  await ImagePicker.pickImage(
+                                                      source:
+                                                          ImageSource.gallery,
+                                                      imageQuality: 80,
+                                                      maxWidth: 300,
+                                                      maxHeight: 300);
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                                width: Globals.width * 0.22,
+                                                height: Globals.width * 0.27,
+                                                child: (image1 == null)
+                                                    ? Center(
+                                                        child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                            FaIcon(
+                                                                FontAwesomeIcons
+                                                                    .photoVideo,
+                                                                color: Colors
+                                                                    .grey[500],
+                                                                size: Globals
+                                                                        .dwidth *
+                                                                    18),
+                                                            Text(
+                                                              "Select Photo",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Lato",
+                                                                  fontSize:
+                                                                      Globals.dwidth *
+                                                                          10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500]),
+                                                            ),
+                                                          ]))
+                                                    : ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    300)),
+                                                        child: Stack(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              width: Globals
+                                                                      .width *
+                                                                  0.18,
+                                                              height: Globals
+                                                                      .width *
+                                                                  0.18,
+                                                              child: Image.file(
+                                                                  image1,
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ),
+                                                            Container(
+                                                              width: double
+                                                                  .infinity,
+                                                              height: double
+                                                                  .infinity,
+                                                              color: Colors.grey
+                                                                  .withAlpha(
+                                                                      120),
+                                                            ),
+                                                            Center(
+                                                              child: FaIcon(
+                                                                  Icons.edit,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: Globals
+                                                                          .dwidth *
+                                                                      18),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )),
+                                          ),
                                           Container(
                                             margin: EdgeInsets.symmetric(
                                                 vertical: Globals.dheight * 7),
@@ -388,7 +450,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                             11 ||
                                                         bioController.text ==
                                                             "" ||
-                                                        addressLatitude == "") {
+                                                        addressLatitude == "" ||
+                                                        image1 == null) {
                                                       Fluttertoast.showToast(
                                                           backgroundColor:
                                                               Colors.red,
@@ -422,7 +485,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                             phoneNumberController
                                                                 .text,
                                                             phoneNumber2Controller
-                                                                .text);
+                                                                .text,
+                                                            image1);
                                                     if (success ==
                                                             SignUpState
                                                                 .SignedUpWithGoogle ||

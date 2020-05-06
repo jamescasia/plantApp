@@ -8,6 +8,7 @@ import 'package:plantApp/DataModels/Listing.dart';
 import 'package:plantApp/ScopedModels/app_model.dart';
 import 'package:plantApp/Screens/AddPostPage.dart';
 import 'package:plantApp/Screens/LogInPage.dart';
+import 'package:plantApp/Screens/ViewLocalSellersPage.dart';
 import 'package:plantApp/Screens/elements/ImageTileBuying.dart';
 import 'package:plantApp/Screens/elements/ImageTileSelling.dart';
 import 'package:plantApp/Screens/elements/ImageTileSharing.dart';
@@ -294,6 +295,33 @@ class _HomePageState extends State<HomePage> {
                                             child: Center(
                                               child: FaIcon(
                                                 FontAwesomeIcons.user,
+                                                color: Colors.grey[400],
+                                                size: Globals.dwidth * 17,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: Globals.dheight * 100,
+                                        left: Globals.dwidth * 10,
+                                        child: InkWell(
+                                          highlightColor: Colors.yellow,
+                                          splashColor: Colors.yellow,
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                new MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ViewLocalSellersPage()));
+                                          },
+                                          child: Container(
+                                            width: Globals.dwidth * 30,
+                                            height: Globals.dwidth * 30,
+                                            child: Center(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.mapMarkerAlt,
                                                 color: Colors.grey[400],
                                                 size: Globals.dwidth * 17,
                                               ),

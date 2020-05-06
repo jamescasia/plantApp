@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
 
-import 'package:plantApp/DataModels/Listing.dart';
-import 'package:plantApp/DataModels/UserInfo.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:plantApp/UtilityModels/UserAdapter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plantApp/DataModels/AppAuth.dart';
 import 'package:plantApp/DataModels/AppDatabase.dart';
 import 'package:plantApp/DataModels/AppStorage.dart';
-import 'dart:io';
-import 'dart:convert';
+import 'package:plantApp/DataModels/Listing.dart';
+import 'package:plantApp/DataModels/UserInfo.dart';
+import 'package:plantApp/UtilityModels/UserAdapter.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class AppModel extends Model {
   UserAdapter userAdapter;
@@ -21,6 +20,7 @@ class AppModel extends Model {
   AppStorage appStorage;
   List<String> sellListingsIds = [];
   List<String> shareListingsIds = [];
+  List<String> sellerIds = [];
   List<String> buyListingsIds = [];
   StreamSubscription listenForNewSellListings;
   StreamSubscription listenForNewShareListings;
@@ -37,6 +37,7 @@ class AppModel extends Model {
     sellListingsIds = [];
     shareListingsIds = [];
     buyListingsIds = [];
+    sellerIds = [];
   }
 
   cancelListeners() {
@@ -176,14 +177,16 @@ class AppModel extends Model {
       String addressLongitude,
       String bio,
       String mainPhoneNumber,
-      String altPhoneNumber) async {
+      String altPhoneNumber,
+      File ppImage) async {
     appAuth.logOut();
 
     try {
       signUpState = SignUpState.SigningUp;
       print(signUpState);
-
       notifyListeners();
+
+      var imgLink = await appStorage.uploadFileAndRetrieveLink(ppImage);
       userAdapter.gUser = await appAuth.signUpWithGoogle();
       userAdapter.uid = userAdapter.gUser.id.toString();
 
@@ -211,7 +214,7 @@ class AppModel extends Model {
             userAdapter.gUser.displayName,
             userAdapter.gUser.email.toString(),
             userAdapter.uid,
-            "https://66.media.tumblr.com/31a0dbc0f988a3b66bafcc84e9140283/tumblr_oouogcBENJ1w5mpldo7_250.png",
+            imgLink,
             bio,
             mainPhoneNumber,
             altPhoneNumber,
@@ -410,6 +413,16 @@ class AppModel extends Model {
       }
     });
     return otherListings;
+  }
+
+  Set<UserInfo> getLocalSellers() {
+    userAdapter.user.allListings.forEach((slr) {
+      if (!sellerIds.contains(slr.poster.email) && slr is ListingSelling) {
+        userAdapter.user.localSellers.add(slr.poster);
+        sellerIds.add(slr.poster.email);
+      }
+    });
+    return userAdapter.user.localSellers;
   }
 }
 

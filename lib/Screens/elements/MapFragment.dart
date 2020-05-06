@@ -19,11 +19,24 @@ class _MapFragmentState extends State<MapFragment> {
 
   _MapFragmentState(this.lat, this.lang);
   Completer<GoogleMapController> _controller = Completer();
+
+  BitmapDescriptor markerIcon;
   CameraPosition initialPosition = CameraPosition(
     target: LatLng(0, 0),
     zoom: 16,
   );
   // CLASS MEMBER, MAP OF MARKS
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(48, 48)), 'assets/images/marker.png')
+        .then((onValue) {
+      markerIcon = onValue;
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +68,7 @@ class _MapFragmentState extends State<MapFragment> {
                       markers: Set<Marker>.of([
                         Marker(
                             markerId: MarkerId("1"),
+                            icon: markerIcon,
                             position: LatLng(lat, lang))
                       ]),
                       mapType: MapType.normal,

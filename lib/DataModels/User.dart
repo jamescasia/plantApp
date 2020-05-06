@@ -9,6 +9,7 @@ class User {
   List<ListingSharing> shareListings = [];
   List<dynamic> allListings = [];
   List<dynamic> ownListings = [];
+  Set<UserInfo> localSellers = new Set();
 
   User() {
     ownListings = [];
