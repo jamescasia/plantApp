@@ -181,6 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               child: CachedNetworkImage(
                                                 imageUrl: appModel.userAdapter
                                                     .user.userInfo.ppLink,
+                                                    fit: BoxFit.cover,
                                                 progressIndicatorBuilder:
                                                     (context, url,
                                                             downloadProgress) =>

@@ -139,6 +139,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               width: Globals.dwidth * 80,
                                               height: Globals.dwidth * 80,
                                               child: CachedNetworkImage(
+                                                fit:BoxFit.cover,
                                                 imageUrl: user.ppLink,
                                                 progressIndicatorBuilder:
                                                     (context, url,

@@ -456,9 +456,9 @@ class _ViewSellListingState extends State<ViewSellListing>
                                                                         child:
                                                                             Container(
                                                                           width:
-                                                                              Globals.dheight * 50,
+                                                                              Globals.dwidth * 50,
                                                                           height:
-                                                                              Globals.dheight * 50,
+                                                                              Globals.dwidth * 50,
                                                                           child:
                                                                               Center(
                                                                             child:

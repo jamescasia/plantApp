@@ -410,10 +410,10 @@ class _ViewShareListingState extends State<ViewShareListing>
                                                                     child:
                                                                         Container(
                                                                       width:
-                                                                          Globals.dheight *
+                                                                          Globals.dwidth *
                                                                               50,
                                                                       height:
-                                                                          Globals.dheight *
+                                                                          Globals.dwidth *
                                                                               50,
                                                                       child:
                                                                           Center(

@@ -421,8 +421,8 @@ class SellerCard extends StatelessWidget {
                 ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(300)),
                     child: Container(
-                      width: Globals.dheight * 50,
-                      height: Globals.dheight * 50,
+                      width: Globals.dwidth * 50,
+                      height: Globals.dwidth * 50,
                       child: Center(
                         child: CachedNetworkImage(
                           imageUrl: seller.ppLink,

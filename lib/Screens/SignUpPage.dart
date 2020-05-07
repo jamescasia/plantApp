@@ -296,94 +296,109 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       : Colors.green)
                                             ],
                                           ),
-                                          InkWell(
-                                            onTap: () async {
-                                              image1 =
-                                                  await ImagePicker.pickImage(
-                                                      source:
-                                                          ImageSource.gallery,
-                                                      imageQuality: 80,
-                                                      maxWidth: 300,
-                                                      maxHeight: 300);
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                                width: Globals.width * 0.22,
-                                                height: Globals.width * 0.27,
-                                                child: (image1 == null)
-                                                    ? Center(
-                                                        child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                            FaIcon(
-                                                                FontAwesomeIcons
-                                                                    .photoVideo,
-                                                                color: Colors
-                                                                    .grey[500],
-                                                                size: Globals
-                                                                        .dwidth *
-                                                                    18),
-                                                            Text(
-                                                              "Select Photo",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Lato",
-                                                                  fontSize:
-                                                                      Globals.dwidth *
-                                                                          10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      500]),
-                                                            ),
-                                                          ]))
-                                                    : ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    300)),
-                                                        child: Stack(
-                                                          children: <Widget>[
-                                                            Container(
-                                                              width: Globals
-                                                                      .width *
-                                                                  0.18,
-                                                              height: Globals
-                                                                      .width *
-                                                                  0.18,
-                                                              child: Image.file(
-                                                                  image1,
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ),
-                                                            Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: double
-                                                                  .infinity,
-                                                              color: Colors.grey
-                                                                  .withAlpha(
-                                                                      120),
-                                                            ),
-                                                            Center(
-                                                              child: FaIcon(
-                                                                  Icons.edit,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: Globals
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text("Select profile\nphoto:",
+                                                  style: TextStyle(
+                                                      fontFamily: "Lato",
+                                                      fontSize: 14)),
+                                                      SizedBox(width:15),
+                                              InkWell(
+                                                onTap: () async {
+                                                  image1 = await ImagePicker
+                                                      .pickImage(
+                                                          source: ImageSource
+                                                              .gallery,
+                                                          imageQuality: 80,
+                                                          maxWidth: 700,
+                                                          maxHeight: 700);
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                    width: Globals.dwidth * 50,
+                                                    height: Globals.dwidth * 50,
+                                                    child: (image1 == null)
+                                                        ? Center(
+                                                            child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                FaIcon(
+                                                                    FontAwesomeIcons
+                                                                        .photoVideo,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        500],
+                                                                    size: Globals
+                                                                            .dwidth *
+                                                                        18),
+                                                                Text(
+                                                                  "Select Photo",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .start,
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Lato",
+                                                                      fontSize:
+                                                                          Globals.dwidth *
+                                                                              10,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          500]),
+                                                                ),
+                                                              ]))
+                                                        : ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            300)),
+                                                            child: Stack(
+                                                              children: <
+                                                                  Widget>[
+                                                                Container(
+                                                                  width: Globals
                                                                           .dwidth *
-                                                                      18),
+                                                                      50,
+                                                                  height: Globals
+                                                                          .dwidth *
+                                                                      50,
+                                                                  child: Image.file(
+                                                                      image1,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                ),
+                                                                Container(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  height: double
+                                                                      .infinity,
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withAlpha(
+                                                                          120),
+                                                                ),
+                                                                Center(
+                                                                  child: FaIcon(
+                                                                      Icons
+                                                                          .edit,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: Globals
+                                                                              .dwidth *
+                                                                          18),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
-                                                      )),
+                                                          )),
+                                              ),
+                                            ],
                                           ),
                                           Container(
                                             margin: EdgeInsets.symmetric(
