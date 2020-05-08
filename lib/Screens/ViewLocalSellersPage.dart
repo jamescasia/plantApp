@@ -93,7 +93,7 @@ class _ViewLocalSellersPageState extends State<ViewLocalSellersPage>
                                     appModel.getLocalSellers().map((e) {
                                   return Marker(
                                       icon: markerIcon,
-                                      markerId: MarkerId("1"),
+                                      markerId: MarkerId(e.address),
                                       position: LatLng(
                                           double.parse(e.addressLatitude),
                                           double.parse(e.addressLongitude)));
@@ -109,6 +109,9 @@ class _ViewLocalSellersPageState extends State<ViewLocalSellersPage>
                                           'assets/images/marker.png')
                                       .then((onValue) {
                                     markerIcon = onValue;
+                                    setState(() {
+                                      
+                                    });
                                   });
                                 },
                               ),
@@ -423,17 +426,17 @@ class SellerCard extends StatelessWidget {
                     child: Container(
                       width: Globals.dwidth * 50,
                       height: Globals.dwidth * 50,
-                      child: Center(
-                        child: CachedNetworkImage(
-                          imageUrl: seller.ppLink,
-                          fit: BoxFit.cover,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                                  CircularProgressIndicator(
+                      child: CachedNetworkImage(
+                        imageUrl: seller.ppLink,
+                        fit: BoxFit.cover,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                Center(
+                                  child: CircularProgressIndicator(
                                       value: downloadProgress.progress),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        ),
+                                ),
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.error),
                       ),
                     )),
                 SizedBox(

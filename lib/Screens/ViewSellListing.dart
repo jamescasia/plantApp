@@ -460,15 +460,12 @@ class _ViewSellListingState extends State<ViewSellListing>
                                                                           height:
                                                                               Globals.dwidth * 50,
                                                                           child:
-                                                                              Center(
-                                                                            child:
-                                                                                CachedNetworkImage(
+                                                                              CachedNetworkImage(
                                                                               imageUrl: listing.poster.ppLink,
                                                                               fit: BoxFit.cover,
-                                                                              progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                                                                              progressIndicatorBuilder: (context, url, downloadProgress) => Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
                                                                               errorWidget: (context, url, error) => Icon(Icons.error),
                                                                             ),
-                                                                          ),
                                                                         )),
                                                                     SizedBox(
                                                                         height:

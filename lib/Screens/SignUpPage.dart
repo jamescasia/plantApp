@@ -311,8 +311,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                           source: ImageSource
                                                               .gallery,
                                                           imageQuality: 80,
-                                                          maxWidth: 700,
-                                                          maxHeight: 700);
+                                                          maxWidth: 300,
+                                                          maxHeight: 300);
                                                   setState(() {});
                                                 },
                                                 child: Container(
